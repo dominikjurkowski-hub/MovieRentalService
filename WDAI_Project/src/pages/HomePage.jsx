@@ -6,11 +6,12 @@
 import SearchBar from "../components/SearchBar.jsx";
 import { useEffect, useState } from "react";
 import {useNavigate} from "react-router-dom";
+import Movie from "../components/Movie.jsx";
 
 function HomePage() {
     const [movies, setMovies] = useState([]);
     const [filteredMovies, setFilteredMovies] = useState([]);
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     // TRZEBA DODAĆ ROUTER WTEDY ZADZIAŁA NAWIGACJA I NIŻEJ <li>
 
     useEffect(() => {
@@ -87,20 +88,19 @@ function HomePage() {
     return (
         <>
             <SearchBar searchingFor={handleSearch} />
-            <div>
+            <div className="container mt-4">
                 {movies.length > 0 ? (
-                    <ul>
+                    <div className="row">
                         {filteredMovies.map((movie) => (
-                            <li key={movie.id} className="product-item">
-                                {/*onClick={() => navigate(`/movies/${movie.id}`, {state: {movie}})*/}
-                                <h3>{movie.title_long}</h3>
-                                <p>Rating: {movie.rating}</p>
-                                <p>{movie.Plot || "No description available."}</p>
-                            </li>
+                            <Movie
+                                key={movie.id}
+                                movie={movie}
+                                onClick={() => navigate(`/movies/${movie.id}`, { state: { movie } })}
+                            />
                         ))}
-                    </ul>
+                    </div>
                 ) : (
-                    <p>Movie not found...</p>
+                    <p className="text-center">Movie not found...</p>//to bym chyba usunął bo jak sie odswieza to jest zawsze Movie not found ale tez jak nie ma takiego filmu to pasowało by to napisac nwm
                 )}
             </div>
         </>
