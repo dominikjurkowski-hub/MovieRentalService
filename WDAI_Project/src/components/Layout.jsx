@@ -1,6 +1,7 @@
 import { Outlet, Link } from "react-router-dom";
 
 function Layout() {
+    const getYear = new Date().getFullYear();
     return (
         <div className="d-flex flex-column min-vh-100">
             <header>
@@ -30,7 +31,7 @@ function Layout() {
             </main>
 
             <footer className="bg-light text-center py-3 mt-auto">
-                <p className="mb-0">Footer content</p>
+                <p className="mb-0">&copy;{getYear} All Rights Reserved, data from yts.mx & omdb</p>
             </footer>
         </div>
     );

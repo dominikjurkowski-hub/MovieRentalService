@@ -17,8 +17,8 @@ function MovieDetailsPage() {
     }
 
     return (
-        <div className="container py-5">
-            <div className="row g-4 align-items-center">
+        <div className="container py-1" >
+            <div className="row g-4">
                 <div className="col-md-4 text-center">
                     <img
                         src={movie.large_cover_image}
