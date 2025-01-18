@@ -6,6 +6,7 @@ function HomePage() {
     const [movies, setMovies] = useState([]);
     const [filteredMovies, setFilteredMovies] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [sortOption, setSortOption] = useState("default");
 
     const enrichMoviesWithOMDb = async (movies) => {// Funkcja do wzbogacania filmów o dane z OMDb
         return Promise.all(
@@ -29,7 +30,7 @@ function HomePage() {
     const fetchInitialMovies = async () => {// Pobieranie filmów domyślnych (pierwsze ładowanie strony)
         try {
             setLoading(true);
-            const response = await fetch(`https://yts.mx/api/v2/list_movies.json?page=${getRandomInt()}`);
+            const response = await fetch(`https://yts.mx/api/v2/list_movies.json?page=${getRandomInt()}&limit=30`);
             await checkIfResponseOk(response);
         } catch (error) {
             console.error("Error fetching initial movies:", error);
@@ -82,6 +83,38 @@ function HomePage() {
         fetchInitialMovies();
     }, []);
 
+    const handleSortChange = (e) => {
+        const value = e.target.value;
+        setSortOption(value);
+        sortMovies(value);
+    };
+
+    const sortMovies = (option) => {
+        let sortedMovies = [...filteredMovies];
+
+        switch (option) {
+            case "default":
+                sortedMovies = [...movies];
+                break;
+            case "yearAsc":
+                sortedMovies.sort((a, b) => a.year - b.year);
+                break;
+            case "yearDesc":
+                sortedMovies.sort((a, b) => b.year - a.year);
+                break;
+            case "ratingAsc":
+                sortedMovies.sort((a, b) => a.rating - b.rating);
+                break;
+            case "ratingDesc":
+                sortedMovies.sort((a, b) => b.rating - a.rating);
+                break;
+            default:
+                break;
+        }
+
+        setFilteredMovies(sortedMovies);
+    };
+
     function getRandomInt() {
         return Math.floor(Math.random() * 100) + 1;
     }
@@ -90,6 +123,26 @@ function HomePage() {
         <>
             <SearchBar searchingFor={handleSearch}/>
             <div className="container mt-4">
+                <div className="mb-3">
+                    <div className="d-flex align-items-center me-auto" style={{maxWidth: '250px'}}>
+                        <label htmlFor="sortSelect" className="form-label mb-0 me-2">
+                            Sort&nbsp;by
+                        </label>
+                        <select
+                            id="sortSelect"
+                            className="form-select"
+                            value={sortOption}
+                            onChange={handleSortChange}
+                        >
+                            <option value="default">Default</option>
+                            <option value="yearAsc">Year (Ascending)</option>
+                            <option value="yearDesc">Year (Descending)</option>
+                            <option value="ratingAsc">Rating (Ascending)</option>
+                            <option value="ratingDesc">Rating (Descending)</option>
+                        </select>
+                    </div>
+
+                </div>
                 {loading ? (
                     <p className="text-center">Loading...</p>
                 ) : filteredMovies.length > 0 ? (
