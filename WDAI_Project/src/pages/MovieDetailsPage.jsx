@@ -43,7 +43,7 @@ function MovieDetailsPage() {
                         </div>
                         <div className="col-sm-6 mb-3">
                             <p><strong>Director:</strong> {movie.Director || "Unknown"}</p>
-                            <p><strong>Summary:</strong> {movie.summary || "No description available."}</p>
+                            <p><strong>Summary:</strong> {movie.Plot || "No description available."}</p>
                             <p><strong>Awards:</strong> {movie.Awards || "N/A"}</p>
                         </div>
                     </div>
@@ -78,10 +78,5 @@ function MovieDetailsPage() {
     );
 }
 
-export default MovieDetailsPage;//tu jakiś map opinii z bazy danych na unordered list
-//może navigate('/component-b/${movie.id}', { state: { dupa: 'TwojArgument' } });
-// i ewentualnie jak ktoś wpisze z palca to sprawdzamy czy stan został przekazany
-//jeśli nie to <p> "Nie znaleziono filmu" </p>
-// jeśli jest to wyświetlamy film...
-
+export default MovieDetailsPage;
 //+ fetch opinii i ich map na <Opinion/>

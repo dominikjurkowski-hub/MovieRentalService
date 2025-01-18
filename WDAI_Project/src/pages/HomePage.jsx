@@ -1,23 +1,16 @@
-//lista movies krótki opis
-//fetchujemy z bazy filmy i mapujemy je na <Movie/>
-//z np title, rok, autor, krótki, ocena
-
 
 import SearchBar from "../components/SearchBar.jsx";
 import { useEffect, useState } from "react";
-import {useNavigate} from "react-router-dom";
 import Movie from "../components/Movie.jsx";
 
 function HomePage() {
     const [movies, setMovies] = useState([]);
     const [filteredMovies, setFilteredMovies] = useState([]);
-    const navigate = useNavigate();
-    // TRZEBA DODAĆ ROUTER WTEDY ZADZIAŁA NAWIGACJA I NIŻEJ <li>
 
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const response = await fetch("https://yts.mx/api/v2/list_movies.json?page=1");
+                const response = await fetch("https://yts.mx/api/v2/list_movies.json?");
 
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
@@ -95,12 +88,10 @@ function HomePage() {
                             <Movie
                                 key={movie.id}
                                 movie={movie}
-                                onClick={() => navigate(`/movies/${movie.id}`, { state: { movie } })}
                             />
                         ))}
                     </div>
-                ) : (
-                    <p className="text-center">Movie not found...</p>//to bym chyba usunął bo jak sie odswieza to jest zawsze Movie not found ale tez jak nie ma takiego filmu to pasowało by to napisac nwm
+                ) : (<p className="text-center">Movie not found...</p>//to bym chyba usunął bo jak sie odswieza to jest zawsze Movie not found ale tez jak nie ma takiego filmu to pasowało by to napisac nwm
                 )}
             </div>
         </>

@@ -5,9 +5,6 @@ import MovieDetailsPage from "./pages/MovieDetailsPage.jsx";
 import CartPage from "./pages/CartPage.jsx";
 
 
-
-
-
 function App() {
 
     return (
