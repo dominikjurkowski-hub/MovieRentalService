@@ -1,10 +1,18 @@
-import React from "react";
+import {useNavigate} from "react-router-dom";
+import PropTypes from "prop-types";
 
 
-function Movie ({ movie, onClick }){
+function Movie ({ movie}){
+
+    const navigate = useNavigate();
+
+    const handleMovieClick = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        navigate(`/movies/${movie.id}`, { state: { movie } });
+    };
     return (
         <div className="col-md-4 mb-4">
-            <div className="card h-100" onClick={onClick} style={{ cursor: "pointer" }}>
+            <div className="card h-100" onClick={handleMovieClick}  style={{ cursor: "pointer" }}>
                 <img
                     src={movie.large_cover_image}
                     alt={movie.title_long}
@@ -20,12 +28,22 @@ function Movie ({ movie, onClick }){
                         <strong>Rating:</strong> {movie.rating}
                     </p>
                     <p className="card-text">
-                        {movie.genres[0]}
+                        {movie.genres?.[0] || "Genre not available"}
                     </p>
                 </div>
             </div>
         </div>
     );
 }
+
+Movie.propTypes = {
+    movie: PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        large_cover_image: PropTypes.string.isRequired,
+        title_long: PropTypes.string.isRequired,
+        rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        genres: PropTypes.arrayOf(PropTypes.string),
+    }).isRequired,
+};
 
 export default Movie;
