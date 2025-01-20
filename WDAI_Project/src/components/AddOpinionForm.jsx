@@ -20,7 +20,6 @@ function AddOpinionForm({onAddOpinion}) {
         };
 
         onAddOpinion(newOpinion);
-
         setName("");
         setRating(0);
         setText("");
@@ -69,6 +68,19 @@ function AddOpinionForm({onAddOpinion}) {
                     ))}
                 </div>
             </Form.Group>
+
+            <Form.Group className="mb-3">
+                <Form.Label>Opinion</Form.Label>
+                <Form.Control
+                    as="textarea"
+                    rows={3}
+                    placeholder="Share your thoughts"
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    required
+                />
+            </Form.Group>
+
 
             <Button variant="primary" type="submit">
                 Submit Opinion
