@@ -1,9 +1,10 @@
 import React from "react";
+import Cart from "../components/Cart.jsx";
 
 function CartPage() {
     return (
         <div>
-            <h1>Cart</h1>
+            <Cart/>
         </div>
     );
 }

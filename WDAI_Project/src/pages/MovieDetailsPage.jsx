@@ -95,7 +95,7 @@ function MovieDetailsPage() {
 
 export default MovieDetailsPage;
 //+ fetch opinii i ich map na <Opinion/>
-
+//TRZEBA zapisywać do bazy danych koszyk, żeby móc zrobić AddToCart button...
 
 ///////////////////////////PRZYKŁADOWA OPINIA
 const opinions = [

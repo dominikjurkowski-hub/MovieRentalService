@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 
 function Opinion({ name, date, rating, text, avatar }) {
     return (
@@ -30,5 +31,13 @@ function Opinion({ name, date, rating, text, avatar }) {
         </div>
     );
 }
+
+Opinion.propTypes = {
+    name: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
+    text: PropTypes.string.isRequired,
+    avatar: PropTypes.string
+};
 
 export default Opinion;
