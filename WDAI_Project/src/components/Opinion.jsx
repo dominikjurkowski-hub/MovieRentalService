@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 
 function Opinion({ name, date, rating, text, avatar }) {
     return (
@@ -10,7 +9,6 @@ function Opinion({ name, date, rating, text, avatar }) {
                     className="rounded-circle me-2"
                     style={{ width: '50px', height: '50px' }}
                 />
-
                 <div>
                     <h5 className="mb-0">{name}</h5>
                     <small className="text-muted">{date}</small>
@@ -31,13 +29,4 @@ function Opinion({ name, date, rating, text, avatar }) {
         </div>
     );
 }
-
-Opinion.propTypes = {
-    name: PropTypes.string.isRequired,
-    date: PropTypes.string.isRequired,
-    rating: PropTypes.number.isRequired,
-    text: PropTypes.string.isRequired,
-    avatar: PropTypes.string
-};
-
 export default Opinion;
