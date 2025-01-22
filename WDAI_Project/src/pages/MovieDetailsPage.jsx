@@ -2,10 +2,14 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import Opinion from "../components/Opinion.jsx";
 import AddOpinionForm from "../components/AddOpinionForm.jsx";
+import {useEffect, useState} from "react";
 
 function MovieDetailsPage() {
     const location = useLocation();
     const navigate = useNavigate();
+
+    const [isInCart, setIsInCart] = useState(false);
+
 
     const movie = location.state?.movie; //{movie} w stanie
 
@@ -18,6 +22,15 @@ function MovieDetailsPage() {
         );
     }
 
+
+
+    useEffect(() => {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const isAlreadyInCart = cart.some((item) => item.id === movie?.id);
+        setIsInCart(isAlreadyInCart);
+    }, [movie]);
+
+
     const addOpinion = (newOpinion) => {
         //cuś backend...
     };
@@ -25,11 +38,15 @@ function MovieDetailsPage() {
     const handleAddToCart = () => {
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        const isAlreadyInCart = cart.some((item) => item.id === movie.id);
-        if (!isAlreadyInCart) {
+        if (!isInCart) {
             cart.push(movie);
             localStorage.setItem("cart", JSON.stringify(cart));
+            setIsInCart(true);
         }
+    };
+
+    const handleGoToCart = () => {
+        navigate("/cart");
     };
 
     return (
@@ -66,9 +83,9 @@ function MovieDetailsPage() {
 
                     <button
                         className="btn btn-primary mt-3"
-                        onClick={handleAddToCart}
+                        onClick={isInCart ? handleGoToCart : handleAddToCart}
                     >
-                        Add to Cart
+                        {isInCart ? "Go to Cart" : "Add to Cart"}
                     </button>
 
                     {movie.yt_trailer_code ? (

@@ -1,9 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {useNavigate} from "react-router-dom";
+
+
+
 
 function MovieInCart({ movie, onRemove }) {
+
+    const navigate = useNavigate();
+
+    const handleMovieClick = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        navigate(`/movies/${movie.id}`, { state: { movie } });
+    };
+
+
+
     return (
-        <div className="card h-100">
+        <div className="card h-100" onClick={handleMovieClick}  style={{ cursor: "pointer" }}>
             <img
                 src={movie.large_cover_image}
                 alt={movie.title_long}
