@@ -1,21 +1,20 @@
-import express from 'express';
-import cors from 'cors';
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
+
+const reviewsRoutes = require("./routes/reviewsRoutes");
+const usersRoutes = require("./routes/userRoutes");
+
 const app = express();
-import userRoutes from './routes/userRoutes.js';
-
-app.use('/api', userRoutes);
-
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Testowa trasa
-app.get('/api', (req, res) => {
-    res.json({ message: 'Backend działa!' });
-});
+const PORT = process.env.PORT || 5000;
 
-// Uruchom serwer
-const PORT = 5000;
+// Ładowanie tras
+app.use("/api/reviews", reviewsRoutes);
+app.use("/api/users", usersRoutes);
+
 app.listen(PORT, () => {
-    console.log(`Serwer działa na porcie ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
