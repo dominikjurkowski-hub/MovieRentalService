@@ -1,17 +1,14 @@
-
 import { useLocation, useNavigate } from "react-router-dom";
 import Opinion from "../components/Opinion.jsx";
 import AddOpinionForm from "../components/AddOpinionForm.jsx";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 function MovieDetailsPage() {
     const location = useLocation();
     const navigate = useNavigate();
-
     const [isInCart, setIsInCart] = useState(false);
-
-
-    const movie = location.state?.movie; //{movie} w stanie
+    const [opinions, setOpinions] = useState([]);
+    const movie = location.state?.movie;
 
     if (!movie) {
         return (
@@ -22,17 +19,51 @@ function MovieDetailsPage() {
         );
     }
 
-
-
     useEffect(() => {
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
         const isAlreadyInCart = cart.some((item) => item.id === movie?.id);
         setIsInCart(isAlreadyInCart);
     }, [movie]);
 
+    useEffect(() => {
+        const fetchOpinions = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/reviews/${movie.id}`);
+                const data = await response.json();
+                if (response.ok) {
+                    setOpinions(data);
+                } else {
+                    console.error("Error fetching opinions:", data.error);
+                }
+            } catch (error) {
+                console.error("Error fetching opinions:", error);
+            }
+        };
 
-    const addOpinion = (newOpinion) => {
-        //cuś backend...
+        fetchOpinions();
+    }, [movie.id]);
+
+    const addOpinion = async (newOpinion) => {
+        try {
+            const response = await fetch("http://localhost:5000/api/reviews", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newOpinion),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+         //       alert("Review added successfully!");
+                setOpinions((prevOpinions) => [...prevOpinions, data]); // Dodaj nową opinię do stanu
+            } else {
+                alert("Error: " + data.error);
+            }
+        } catch (error) {
+            console.error("Error submitting opinion:", error);
+            alert("There was an error submitting your opinion.");
+        }
     };
 
     const handleAddToCart = () => {
@@ -63,7 +94,6 @@ function MovieDetailsPage() {
                         }}
                     />
                 </div>
-
 
                 <div className="col-md-8">
                     <h2 className="mb-3">{movie.title_long}</h2>
@@ -108,7 +138,7 @@ function MovieDetailsPage() {
 
             <div className="container py-5">
                 <h3>Opinions</h3>
-                <AddOpinionForm onAddOpinion={addOpinion}/>
+                <AddOpinionForm onAddOpinion={addOpinion} />
                 <div className="opinion-container mb-4">
                     {opinions.map((opinion, index) => (
                         <Opinion key={index} {...opinion} />
@@ -128,44 +158,3 @@ function MovieDetailsPage() {
 }
 
 export default MovieDetailsPage;
-//+ fetch opinii i ich map na <Opinion/>
-
-
-///////////////////////////PRZYKŁADOWA OPINIA
-const opinions = [
-    {
-        name: "John Doe",
-        date: "January 18, 2025",
-        rating: 4,
-        text: "This movie was absolutely fantastic! The plot was gripping, the performances were stellar, and I couldn't take my eyes off the screen. Highly recommend!",
-        avatar: "https://via.placeholder.com/50"
-    },
-    {
-        name: "Jane Smith",
-        date: "January 19, 2025",
-        rating: 5,
-        text: "I loved this movie! Every scene was so well thought out. The acting was brilliant and the visuals were stunning. A must-see for anyone who loves cinema!",
-        avatar: "https://via.placeholder.com/50/FF6347/FFFFFF?Text=Jane+Smith"
-    },
-    {
-        name: "Tom Brown",
-        date: "January 20, 2025",
-        rating: 3,
-        text: "It was a good movie, but it didn't really live up to the hype. The story was okay, but I expected more. The acting was fine, though.",
-        avatar: "https://via.placeholder.com/50/ADD8E6/FFFFFF?Text=Tom+Brown"
-    },
-    {
-        name: "Emily Clark",
-        date: "January 22, 2025",
-        rating: 2,
-        text: "Not a fan of this movie. It felt a bit too long and the pacing was slow. I didn't connect with the characters as much as I hoped.",
-        avatar: "https://via.placeholder.com/50/98FB98/FFFFFF?Text=Emily+Clark"
-    },
-    {
-        name: "Michael Johnson",
-        date: "January 23, 2025",
-        rating: 4,
-        text: "Great action sequences and a solid storyline. A few predictable moments, but overall a fun ride. Worth watching for action lovers.",
-        avatar: "https://via.placeholder.com/50/FFD700/FFFFFF?Text=Michael+Johnson"
-    }
-];
