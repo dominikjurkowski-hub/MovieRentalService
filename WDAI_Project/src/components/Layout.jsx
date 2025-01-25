@@ -1,7 +1,16 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 
 function Layout() {
     const getYear = new Date().getFullYear();
+    const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+
+    const handleLogout = () => {
+        localStorage.removeItem("token"); // Usuń token
+        alert("You have been logged out.");
+        navigate("/login"); // Przekieruj na stronę logowania
+    };
+
     return (
         <div className="d-flex flex-column min-vh-100">
             <header>
@@ -12,7 +21,7 @@ function Layout() {
                             <span className="navbar-toggler-icon"></span>
                         </button>
                         <div className="collapse navbar-collapse" id="navbarNav">
-                            <ul className="navbar-nav">
+                            <ul className="navbar-nav me-auto">
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/">Home</Link>
                                 </li>
@@ -20,10 +29,35 @@ function Layout() {
                                     <Link className="nav-link" to="/cart">Cart</Link>
                                 </li>
                             </ul>
+                            <ul className="navbar-nav">
+                                {token ? (
+                                    <>
+                                        <li className="nav-item">
+                                            <button
+                                                className="btn btn-link nav-link"
+                                                onClick={handleLogout}
+                                                style={{ textDecoration: "none" }}
+                                            >
+                                                Logout
+                                            </button>
+                                        </li>
+                                    </>
+                                ) : (
+                                    <>
+                                        <li className="nav-item">
+                                            <Link className="nav-link" to="/login">Login</Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link className="nav-link" to="/register">Register</Link>
+                                        </li>
+                                    </>
+                                )}
+                            </ul>
                         </div>
                     </div>
                 </nav>
             </header>
+
             <main className="flex-grow-1">
                 <div className="container py-4">
                     <Outlet />
