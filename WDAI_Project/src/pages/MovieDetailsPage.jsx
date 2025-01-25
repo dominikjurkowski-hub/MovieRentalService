@@ -32,7 +32,7 @@ function MovieDetailsPage() {
 
                 if (response.ok) {
                     const cartItems = await response.json();
-                    const isAlreadyInCart = cartItems.some((item) => item.movieId === movie.id);
+                    const isAlreadyInCart = cartItems.some((item) => item.id === movie.id);
                     setIsInCart(isAlreadyInCart);
                 } else {
                     console.error("Error fetching cart items:", response.statusText);
@@ -101,13 +101,7 @@ function MovieDetailsPage() {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({
-                    movie: {
-                        id: movie.id,
-                        title: movie.title,
-                        image: movie.large_cover_image,
-                    },
-                }),
+                body: JSON.stringify({movie})
             });
 
             if (response.ok) {

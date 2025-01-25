@@ -15,6 +15,7 @@ function CartPage() {
 
             const data = await response.json();
             if (response.ok) {
+                console.log("Fetched cart data:", data);
                 setCartItems(data);
             } else {
                 alert("Failed to fetch cart items");
@@ -35,7 +36,7 @@ function CartPage() {
         });
 
         if (response.ok) {
-            setCartItems((prevItems) => prevItems.filter((item) => item.movieId !== movieId));
+            setCartItems((prevItems) => prevItems.filter((item) => item.id !== movieId));
         } else {
             alert("Failed to remove item from cart");
         }
@@ -54,10 +55,10 @@ function CartPage() {
             <h2>Your Cart</h2>
             <div className="row">
                 {cartItems.map((movie) => (
-                    <div className="col-md-4 mb-4" key={movie.movieId}>
+                    <div className="col-md-4 mb-4" key={movie.id}>
                         <MovieInCart
                             movie={movie}
-                            onRemove={() => handleRemoveFromCart(movie.movieId)}
+                            onRemove={() => handleRemoveFromCart(movie.id)}
                         />
                     </div>
                 ))}
