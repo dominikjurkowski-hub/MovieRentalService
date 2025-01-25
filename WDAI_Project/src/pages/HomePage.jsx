@@ -13,15 +13,15 @@ function HomePage() {
             movies.map(async (movie) => {
                 if (movie.imdb_code) {
                     const omdbResponse = await fetch(
-                        `https://www.omdbapi.com/?i=${movie.imdb_code}&apikey=e23afbb8`
+                        `https://www.omdbapi.com/?i=${movie.imdb_code}&apikey=f4eb4389`
                     );
 
                     if (omdbResponse.ok) {
                         const omdbData = await omdbResponse.json();
-                        return {...movie, ...omdbData};
+                        return {...movie, ...omdbData, price: calculatePrice(movie.id)};
                     }
                 }
-                return movie;
+                return {...movie, price: calculatePrice(movie.id)};
             })
         );
     };
@@ -43,6 +43,7 @@ function HomePage() {
     const fetchMoviesBySearch = async (searchValue) => {// Pobieranie filmów według zapytania użytkownika
         try {
             setLoading(true);
+            await new Promise(resolve => setTimeout(resolve, 500));
             const response = await fetch(`https://yts.mx/api/v2/list_movies.json?query_term=${searchValue}`);
             if (!await checkIfResponseOk(response)) {
                 setMovies([]);
@@ -117,6 +118,10 @@ function HomePage() {
 
     function getRandomInt() {
         return Math.floor(Math.random() * 100) + 1;
+    }
+
+    const calculatePrice = (id) => {
+        return (12 + 2 * Math.log(id) + 4 * Math.sin(id))/4;
     }
 
     return (
