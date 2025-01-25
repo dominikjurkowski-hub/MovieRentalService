@@ -1,41 +1,46 @@
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CreateAccountPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [error, setError] = useState("");
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
-            alert("Passwords do not match");
+            setError("Passwords do not match");
             return;
         }
 
-        // Example API call
-        const response = await fetch("http://localhost:5000/api/register", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({email, password}),
-        });
+        try {
+            const response = await fetch("http://localhost:5000/api/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (response.ok) {
-            alert("Registration successful! Please log in.");
-            navigate("/login");
-        } else {
-            alert(data.message || "Registration failed");
+            if (response.ok) {
+                alert("Registration successful! Please log in.");
+                navigate("/login"); // Przekieruj do strony logowania
+            } else {
+                setError(data.error || "Registration failed");
+            }
+        } catch (err) {
+            setError("An error occurred. Please try again.");
         }
     };
 
     return (
         <div className="container d-flex justify-content-center align-items-center min-vh-100">
-            <div className="card shadow-lg p-4" style={{maxWidth: "500px", width: "100%"}}>
+            <div className="card shadow-lg p-4" style={{ maxWidth: "500px", width: "100%" }}>
                 <h2 className="text-center mb-4">Register</h2>
+                {error && <div className="alert alert-danger">{error}</div>}
                 <form onSubmit={handleRegister}>
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">Email:</label>
@@ -79,4 +84,5 @@ function CreateAccountPage() {
         </div>
     );
 }
-export default CreateAccountPage
+
+export default CreateAccountPage;

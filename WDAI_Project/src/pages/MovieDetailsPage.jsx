@@ -9,6 +9,7 @@ function MovieDetailsPage() {
     const [isInCart, setIsInCart] = useState(false);
     const [opinions, setOpinions] = useState([]);
     const movie = location.state?.movie;
+    const token = localStorage.getItem("token"); // Pobierz token z localStorage
 
     if (!movie) {
         return (
@@ -20,10 +21,31 @@ function MovieDetailsPage() {
     }
 
     useEffect(() => {
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const isAlreadyInCart = cart.some((item) => item.id === movie?.id);
-        setIsInCart(isAlreadyInCart);
-    }, [movie]);
+        // Sprawdź, czy film jest już w koszyku użytkownika
+        const checkIfMovieIsInCart = async () => {
+            try {
+                const response = await fetch("http://localhost:5000/api/cart", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (response.ok) {
+                    const cartItems = await response.json();
+                    const isAlreadyInCart = cartItems.some((item) => item.movieId === movie.id);
+                    setIsInCart(isAlreadyInCart);
+                } else {
+                    console.error("Error fetching cart items:", response.statusText);
+                }
+            } catch (error) {
+                console.error("Error checking cart:", error);
+            }
+        };
+
+        if (token) {
+            checkIfMovieIsInCart();
+        }
+    }, [movie, token]);
 
     useEffect(() => {
         const fetchOpinions = async () => {
@@ -55,7 +77,6 @@ function MovieDetailsPage() {
 
             const data = await response.json();
             if (response.ok) {
-         //       alert("Review added successfully!");
                 setOpinions((prevOpinions) => [...prevOpinions, data]); // Dodaj nową opinię do stanu
             } else {
                 alert("Error: " + data.error);
@@ -66,13 +87,38 @@ function MovieDetailsPage() {
         }
     };
 
-    const handleAddToCart = () => {
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const handleAddToCart = async () => {
+        if (!token) {
+            alert("Please log in to add movies to your cart.");
+            navigate("/login");
+            return;
+        }
 
-        if (!isInCart) {
-            cart.push(movie);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            setIsInCart(true);
+        try {
+            const response = await fetch("http://localhost:5000/api/cart", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    movie: {
+                        id: movie.id,
+                        title: movie.title,
+                        image: movie.large_cover_image,
+                    },
+                }),
+            });
+
+            if (response.ok) {
+                setIsInCart(true); // Ustaw stan, że film jest w koszyku
+            } else {
+                const data = await response.json();
+                alert("Error: " + data.error);
+            }
+        } catch (error) {
+            console.error("Error adding movie to cart:", error);
+            alert("There was an error adding the movie to your cart.");
         }
     };
 

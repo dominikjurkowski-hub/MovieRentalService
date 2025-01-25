@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Login Component
 function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -10,8 +9,7 @@ function LoginPage() {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        // Example API call
-        const response = await fetch("http://localhost:5000/api/login", {
+        const response = await fetch("http://localhost:5000/api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password }),
@@ -20,11 +18,10 @@ function LoginPage() {
         const data = await response.json();
 
         if (response.ok) {
-            localStorage.setItem("token", data.token); // Save token
-            alert("Login successful!");
-            navigate("/dashboard"); // Redirect to dashboard or main page
+            localStorage.setItem("token", data.token); // Zapisz token
+            navigate("/"); // Przekieruj na stronę główną
         } else {
-            alert(data.message || "Login failed");
+            alert(data.error || "Login failed");
         }
     };
 
@@ -64,4 +61,5 @@ function LoginPage() {
         </div>
     );
 }
+
 export default LoginPage;
