@@ -1,12 +1,7 @@
-
 import PropTypes from "prop-types";
-import {useNavigate} from "react-router-dom";
-
-
-
+import { useNavigate } from "react-router-dom";
 
 function MovieInCart({ movie, onRemove }) {
-
     const navigate = useNavigate();
 
     const handleMovieClick = () => {
@@ -14,10 +9,13 @@ function MovieInCart({ movie, onRemove }) {
         navigate(`/movies/${movie.id}`, { state: { movie } });
     };
 
-
+    const handleRemoveClick = (e) => {
+        e.stopPropagation();
+        onRemove();
+    };
 
     return (
-        <div className="card h-100" onClick={handleMovieClick}  style={{ cursor: "pointer" }}>
+        <div className="card h-100" onClick={handleMovieClick} style={{ cursor: "pointer" }}>
             <img
                 src={movie.large_cover_image}
                 alt={movie.title_long}
@@ -32,9 +30,12 @@ function MovieInCart({ movie, onRemove }) {
                 <p className="card-text">
                     <strong>Genre:</strong> {movie.genres?.[0] || "N/A"}
                 </p>
+                <p className="card-text">
+                    <strong>Director:</strong> {movie.Director || "Unknown"}
+                </p>
                 <button
                     className="btn btn-danger mt-2"
-                    onClick={onRemove}
+                    onClick={handleRemoveClick} // Użyj nowej funkcji
                 >
                     Remove from Cart
                 </button>
@@ -50,6 +51,7 @@ MovieInCart.propTypes = {
         title_long: PropTypes.string.isRequired,
         rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         genres: PropTypes.arrayOf(PropTypes.string),
+        Director: PropTypes.string,
     }).isRequired,
     onRemove: PropTypes.func.isRequired,
 };

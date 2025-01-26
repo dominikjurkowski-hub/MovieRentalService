@@ -1,0 +1,60 @@
+
+body.dark-mode {
+    background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+    color: #ffffff;
+}
+
+body.light-mode {
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    color: #000000;
+}
+
+.dark-mode header,
+.dark-mode footer {
+    background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.light-mode header,
+.light-mode footer {
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.dark-mode header {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.light-mode header {
+    background-color: rgba(255, 255, 255, 0.7) !important; /* Półprzezroczyste tło w trybie jasnym */
+}
+
+.nav-link {
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    transform: translateY(-2px);
+    opacity: 0.8;
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 0;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}
+
+

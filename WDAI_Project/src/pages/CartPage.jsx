@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MovieInCart from "../components/MovieInCart";
 
 function CartPage() {
@@ -15,7 +15,6 @@ function CartPage() {
 
             const data = await response.json();
             if (response.ok) {
-                console.log("Fetched cart data:", data);
                 setCartItems(data);
             } else {
                 alert("Failed to fetch cart items");
@@ -28,17 +27,24 @@ function CartPage() {
     }, [token]);
 
     const handleRemoveFromCart = async (movieId) => {
-        const response = await fetch(`http://localhost:5000/api/cart/${movieId}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        try {
+            const response = await fetch(`http://localhost:5000/api/cart/${movieId}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-        if (response.ok) {
-            setCartItems((prevItems) => prevItems.filter((item) => item.id !== movieId));
-        } else {
-            alert("Failed to remove item from cart");
+            const data = await response.json();
+            if (response.ok) {
+                setCartItems((prevItems) => prevItems.filter((item) => item.id !== movieId));
+            } else {
+                console.error("Error removing item from cart:", data.error);
+                alert("Failed to remove item from cart: " + (data.error || "Unknown error"));
+            }
+        } catch (error) {
+            console.error("Error removing item from cart:", error); // Loguj błąd
+            alert("There was an error removing the item from your cart.");
         }
     };
 

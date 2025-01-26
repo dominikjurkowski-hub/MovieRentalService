@@ -50,7 +50,11 @@ function MovieDetailsPage() {
     useEffect(() => {
         const fetchOpinions = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/reviews/${movie.id}`);
+                const response = await fetch(`http://localhost:5000/api/reviews/${movie.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
                 const data = await response.json();
                 if (response.ok) {
                     setOpinions(data);
@@ -71,6 +75,7 @@ function MovieDetailsPage() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify(newOpinion),
             });
@@ -196,5 +201,6 @@ function MovieDetailsPage() {
         </div>
     );
 }
+
 
 export default MovieDetailsPage;
