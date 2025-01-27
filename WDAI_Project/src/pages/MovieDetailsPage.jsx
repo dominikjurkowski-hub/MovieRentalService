@@ -51,11 +51,8 @@ function MovieDetailsPage() {
     useEffect(() => {
         const fetchOpinions = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/reviews/${movie.id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const response = await fetch(`http://localhost:5000/api/reviews/${movie.id}`);  // Usuń nagłówek Authorization
+
                 const data = await response.json();
                 if (response.ok) {
                     setOpinions(data);

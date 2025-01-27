@@ -4,11 +4,10 @@ import { addToCart, getCart, removeFromCart } from '../controllers/cartControlle
 
 const router = express.Router();
 
-router.use(authenticate); // Wymagaj autoryzacji dla wszystkich endpointów koszyka
 
-router.post('/cart', addToCart);
-router.get('/cart', getCart);
-router.delete('/cart/:movieId', removeFromCart);
+router.post('/cart',authenticate, addToCart);
+router.get('/cart',authenticate, getCart);
+router.delete('/cart/:movieId',authenticate, removeFromCart);
 
 
 export default router;
