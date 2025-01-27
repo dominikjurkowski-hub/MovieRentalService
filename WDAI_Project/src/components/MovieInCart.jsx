@@ -23,7 +23,7 @@ function MovieInCart({ movie, onRemove }) {
                 src={movie.medium_cover_image}
                 alt={movie.title_long}
                 className="card-img-top"
-                style={{width: "295px", height: "350px", objectFit: "cover"}}
+                style={{width: "295px", height: "400px", objectFit: "cover"}}
             />
             <div className="card-body p-2" > {/* Zmniejsz padding wewnątrz card-body */}
                 <h5 className="card-title mb-3">{movie.title_long}</h5> {/* Normalna grubość czcionki dla tytułu */}

@@ -167,13 +167,16 @@ function MovieDetailsPage() {
                             <p><strong>Director:</strong> {movie.Director || "Unknown"}</p>
                             <p><strong>Summary:</strong> {movie.Plot || "No description available."}</p>
                             <p><strong>Awards:</strong> {movie.Awards || "N/A"}</p>
+                            <br></br>
                         </div>
                     </div>
 
+                    <p><strong>Price:</strong> {movie.price?.toFixed(2) || "N/A"} $</p>
                     <button
                         className="btn btn-primary mt-3"
                         onClick={isInCart ? handleGoToCart : handleAddToCart}
                     >
+
                         {isInCart ? "Go to Cart" : "Add to Cart"}
                     </button>
 
@@ -196,7 +199,7 @@ function MovieDetailsPage() {
             </div>
 
             <div className="container py-5">
-                <h3>Opinions {averageRating}</h3>
+            <h3>Opinions {averageRating}</h3>
                 <AddOpinionForm onAddOpinion={addOpinion} />
                 <div className="opinion-container mb-4">
                     {opinions.map((opinion, index) => (

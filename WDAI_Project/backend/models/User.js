@@ -3,6 +3,9 @@ import bcrypt from 'bcryptjs';
 
 class User {
     static async create(email, password) {
+        if ( await this.findByEmail(email) ) {
+            throw new Error('User already exists');
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
         return new Promise((resolve, reject) => {
             db.run(
