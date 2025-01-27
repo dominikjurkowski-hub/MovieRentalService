@@ -11,6 +11,7 @@ function MovieDetailsPage() {
     const movie = location.state?.movie;
     const token = localStorage.getItem("token");
     const { updateCartTotalPrice } = useOutletContext(); // Odbieramy funkcję z kontekstu
+    const [averageRating, setAverageRating] = useState('');
 
     if (!movie) {
         return (
@@ -55,6 +56,14 @@ function MovieDetailsPage() {
                 const data = await response.json();
                 if (response.ok) {
                     setOpinions(data);
+
+                        if (data.length > 0) {
+                        const totalRating = data.reduce((sum, review) => sum + review.rating, 0);
+                        const average = totalRating / data.length;
+                        setAverageRating(average.toFixed(2));
+                    } else {
+                        setAverageRating('');
+                    }
                 } else {
                     console.error("Error fetching opinions:", data.error);
                 }
@@ -64,7 +73,8 @@ function MovieDetailsPage() {
         };
 
         fetchOpinions();
-    }, [movie.id]);
+    }, [movie.id, opinions]);
+
 
     const addOpinion = async (newOpinion) => {
         try {
@@ -186,7 +196,7 @@ function MovieDetailsPage() {
             </div>
 
             <div className="container py-5">
-                <h3>Opinions</h3>
+                <h3>Opinions {averageRating}</h3>
                 <AddOpinionForm onAddOpinion={addOpinion} />
                 <div className="opinion-container mb-4">
                     {opinions.map((opinion, index) => (
