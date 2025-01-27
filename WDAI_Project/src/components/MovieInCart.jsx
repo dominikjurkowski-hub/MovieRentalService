@@ -1,40 +1,40 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {useNavigate} from "react-router-dom";
-
-
-
+import { useNavigate } from "react-router-dom";
 
 function MovieInCart({ movie, onRemove }) {
-
     const navigate = useNavigate();
 
     const handleMovieClick = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        navigate(`/movies/${movie.id}`, { state: { movie } });
+        navigate(`/movies/${movie.movieId}`, { state: { movie } });
     };
 
-
+    // Domyślne zdjęcie, jeśli `image` jest brakujące
+    const defaultImage = "https://via.placeholder.com/300x450?text=No+Image+Available";
 
     return (
-        <div className="card h-100" onClick={handleMovieClick}  style={{ cursor: "pointer" }}>
+        <div className="card h-100" onClick={handleMovieClick} style={{ cursor: "pointer" }}>
             <img
-                src={movie.large_cover_image}
-                alt={movie.title_long}
+                src={movie.image || defaultImage} // Użyj domyślnego zdjęcia, jeśli brakuje
+                alt={movie.title}
                 className="card-img-top"
-                style={{ width: "100%", height: "auto" }}
+                style={{ width: "100%", height: "auto", objectFit: "cover" }}
             />
             <div className="card-body">
-                <h5 className="card-title">{movie.title_long}</h5>
+                <h5 className="card-title">{movie.title}</h5>
                 <p className="card-text">
-                    <strong>Rating:</strong> {movie.rating}
+                    <strong>Rating:</strong> {movie.rating || "N/A"}
                 </p>
                 <p className="card-text">
                     <strong>Genre:</strong> {movie.genres?.[0] || "N/A"}
                 </p>
                 <button
                     className="btn btn-danger mt-2"
-                    onClick={onRemove}
+                    onClick={(e) => {
+                        e.stopPropagation(); // Zapobiegaj przejściu do strony filmu po kliknięciu przycisku
+                        onRemove();
+                    }}
                 >
                     Remove from Cart
                 </button>
@@ -45,9 +45,9 @@ function MovieInCart({ movie, onRemove }) {
 
 MovieInCart.propTypes = {
     movie: PropTypes.shape({
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-        large_cover_image: PropTypes.string.isRequired,
-        title_long: PropTypes.string.isRequired,
+        movieId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        image: PropTypes.string,
+        title: PropTypes.string.isRequired,
         rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         genres: PropTypes.arrayOf(PropTypes.string),
     }).isRequired,
