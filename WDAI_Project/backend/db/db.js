@@ -28,11 +28,32 @@ db.serialize(() => {
     // Tabela cart
     db.run(`
         CREATE TABLE IF NOT EXISTS cart (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            IDcart INTEGER PRIMARY KEY AUTOINCREMENT,
             userId INTEGER,
-            movieId TEXT,
+            id TEXT,
+            url TEXT,
+            imdb_code TEXT,
             title TEXT,
-            image TEXT,
+            title_english TEXT,
+            title_long TEXT,
+            slug TEXT,
+            year INTEGER,
+            rating REAL,
+            runtime INTEGER,
+            genres TEXT,
+            summary TEXT,
+            description_full TEXT,
+            yt_trailer_code TEXT,
+            language TEXT,
+            mpa_rating TEXT,
+            background_image TEXT,
+            small_cover_image TEXT,
+            medium_cover_image TEXT,
+            large_cover_image TEXT,
+            Director TEXT,
+            Plot TEXT,
+            Awards TEXT,
+            price REAL,
             FOREIGN KEY (userId) REFERENCES users(id)
         )
     `, (err) => {
@@ -42,6 +63,7 @@ db.serialize(() => {
             console.log('Cart table created or already exists');
         }
     });
+
 
     // Tabela reviews (istniejąca)
     db.run(`
@@ -61,5 +83,7 @@ db.serialize(() => {
         }
     });
 });
+
+
 
 export default db;

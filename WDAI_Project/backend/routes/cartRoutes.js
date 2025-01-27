@@ -10,4 +10,5 @@ router.post('/cart', addToCart);
 router.get('/cart', getCart);
 router.delete('/cart/:movieId', removeFromCart);
 
+
 export default router;

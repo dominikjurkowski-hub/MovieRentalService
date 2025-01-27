@@ -22,32 +22,13 @@ function AddOpinionForm({ onAddOpinion }) {
         };
 
         setIsSubmitting(true);
+        onAddOpinion(newOpinion); // Przekaż odpowiedź z backendu
 
-        try {
-            const response = await fetch('http://localhost:5000/api/reviews', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newOpinion),
-            });
 
-            const data = await response.json();
-            if (response.ok) {
-     //           alert('Review added successfully!');
-                onAddOpinion(data); // Przekaż odpowiedź z backendu
-            } else {
-                alert('Error: ' + data.error);
-            }
-        } catch (error) {
-            console.error('Error submitting opinion:', error);
-            alert('There was an error submitting your opinion.');
-        } finally {
-            setIsSubmitting(false);
-            setName("");
-            setRating(0);
-            setText("");
-        }
+        setIsSubmitting(false);
+        setName("");
+        setRating(0);
+        setText("");
     };
 
     const handleClick = (value) => {

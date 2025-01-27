@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MovieInCart from "../components/MovieInCart";
+import { useOutletContext } from "react-router-dom"; // Dodane do odczytu kontekstu
 
 function CartPage() {
     const [cartItems, setCartItems] = useState([]);
     const token = localStorage.getItem("token");
+    const { updateCartTotalPrice } = useOutletContext(); // Odbieramy funkcję z kontekstu
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -27,17 +29,25 @@ function CartPage() {
     }, [token]);
 
     const handleRemoveFromCart = async (movieId) => {
-        const response = await fetch(`http://localhost:5000/api/cart/${movieId}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        try {
+            const response = await fetch(`http://localhost:5000/api/cart/${movieId}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-        if (response.ok) {
-            setCartItems((prevItems) => prevItems.filter((item) => item.movieId !== movieId));
-        } else {
-            alert("Failed to remove item from cart");
+            const data = await response.json();
+            if (response.ok) {
+                setCartItems((prevItems) => prevItems.filter((item) => item.id !== movieId));
+                updateCartTotalPrice(); // Aktualizacja sumy cen po usunięciu filmu
+            } else {
+                console.error("Error removing item from cart:", data.error);
+                alert("Failed to remove item from cart: " + (data.error || "Unknown error"));
+            }
+        } catch (error) {
+            console.error("Error removing item from cart:", error);
+            alert("There was an error removing the item from your cart.");
         }
     };
 
@@ -54,10 +64,10 @@ function CartPage() {
             <h2>Your Cart</h2>
             <div className="row">
                 {cartItems.map((movie) => (
-                    <div className="col-md-4 mb-4" key={movie.movieId}>
+                    <div className="col-md-4 mb-4" key={movie.id}>
                         <MovieInCart
                             movie={movie}
-                            onRemove={() => handleRemoveFromCart(movie.movieId)}
+                            onRemove={() => handleRemoveFromCart(movie.id)}
                         />
                     </div>
                 ))}
