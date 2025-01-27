@@ -28,10 +28,10 @@ function MovieInCart({ movie, onRemove }) {
                     <strong>Rating:</strong> {movie.rating}
                 </p>
                 <p className="card-text">
-                    <strong>Genre:</strong> {movie.genres?.[0] || "N/A"}
+                    <strong>Director:</strong> {movie.Director || "Unknown"}
                 </p>
                 <p className="card-text">
-                    <strong>Director:</strong> {movie.Director || "Unknown"}
+                    <strong>Price:</strong> {movie.price?.toFixed(2) || "N/A"} $
                 </p>
                 <button
                     className="btn btn-danger mt-2"

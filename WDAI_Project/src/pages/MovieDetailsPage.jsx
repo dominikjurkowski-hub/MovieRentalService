@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import Opinion from "../components/Opinion.jsx";
 import AddOpinionForm from "../components/AddOpinionForm.jsx";
 import { useEffect, useState } from "react";
@@ -9,7 +9,8 @@ function MovieDetailsPage() {
     const [isInCart, setIsInCart] = useState(false);
     const [opinions, setOpinions] = useState([]);
     const movie = location.state?.movie;
-    const token = localStorage.getItem("token"); // Pobierz token z localStorage
+    const token = localStorage.getItem("token");
+    const { updateCartTotalPrice } = useOutletContext(); // Odbieramy funkcję z kontekstu
 
     if (!movie) {
         return (
@@ -100,17 +101,24 @@ function MovieDetailsPage() {
         }
 
         try {
+            // Oblicz cenę filmu (jeśli nie jest przekazana w obiekcie movie)
+            const movieWithPrice = {
+                ...movie,
+                price: (12 + 2 * Math.log(movie.id) + 4 * Math.sin(movie.id)) / 4,
+            };
+
             const response = await fetch("http://localhost:5000/api/cart", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({movie})
+                body: JSON.stringify({ movie: movieWithPrice }),
             });
 
             if (response.ok) {
-                setIsInCart(true); // Ustaw stan, że film jest w koszyku
+                setIsInCart(true);
+                updateCartTotalPrice(); // Aktualizacja sumy cen po dodaniu filmu
             } else {
                 const data = await response.json();
                 alert("Error: " + data.error);
@@ -201,6 +209,5 @@ function MovieDetailsPage() {
         </div>
     );
 }
-
 
 export default MovieDetailsPage;

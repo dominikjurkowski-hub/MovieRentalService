@@ -27,35 +27,36 @@ db.serialize(() => {
 
     // Tabela cart
     db.run(`
-    CREATE TABLE IF NOT EXISTS cart (
-        IDcart INTEGER PRIMARY KEY AUTOINCREMENT,
-    userId INTEGER,
-    id TEXT,
-    url TEXT,
-    imdb_code TEXT,
-    title TEXT,
-    title_english TEXT,
-    title_long TEXT,
-    slug TEXT,
-    year INTEGER,
-    rating REAL,
-    runtime INTEGER,
-    genres TEXT,
-    summary TEXT,
-    description_full TEXT,
-    yt_trailer_code TEXT,
-    language TEXT,
-    mpa_rating TEXT,
-    background_image TEXT,
-    small_cover_image TEXT,
-    medium_cover_image TEXT,
-    large_cover_image TEXT,
-    Director TEXT,
-    Plot TEXT,
-    Awards TEXT,
-    FOREIGN KEY (userId) REFERENCES users(id)
-    )
-`, (err) => {
+        CREATE TABLE IF NOT EXISTS cart (
+            IDcart INTEGER PRIMARY KEY AUTOINCREMENT,
+            userId INTEGER,
+            id TEXT,
+            url TEXT,
+            imdb_code TEXT,
+            title TEXT,
+            title_english TEXT,
+            title_long TEXT,
+            slug TEXT,
+            year INTEGER,
+            rating REAL,
+            runtime INTEGER,
+            genres TEXT,
+            summary TEXT,
+            description_full TEXT,
+            yt_trailer_code TEXT,
+            language TEXT,
+            mpa_rating TEXT,
+            background_image TEXT,
+            small_cover_image TEXT,
+            medium_cover_image TEXT,
+            large_cover_image TEXT,
+            Director TEXT,
+            Plot TEXT,
+            Awards TEXT,
+            price REAL,
+            FOREIGN KEY (userId) REFERENCES users(id)
+        )
+    `, (err) => {
         if (err) {
             console.error('Error creating cart table:', err);
         } else {
@@ -82,5 +83,7 @@ db.serialize(() => {
         }
     });
 });
+
+
 
 export default db;

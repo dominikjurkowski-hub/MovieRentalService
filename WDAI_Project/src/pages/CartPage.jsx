@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import MovieInCart from "../components/MovieInCart";
+import { useOutletContext } from "react-router-dom"; // Dodane do odczytu kontekstu
 
 function CartPage() {
     const [cartItems, setCartItems] = useState([]);
     const token = localStorage.getItem("token");
+    const { updateCartTotalPrice } = useOutletContext(); // Odbieramy funkcję z kontekstu
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -38,12 +40,13 @@ function CartPage() {
             const data = await response.json();
             if (response.ok) {
                 setCartItems((prevItems) => prevItems.filter((item) => item.id !== movieId));
+                updateCartTotalPrice(); // Aktualizacja sumy cen po usunięciu filmu
             } else {
                 console.error("Error removing item from cart:", data.error);
                 alert("Failed to remove item from cart: " + (data.error || "Unknown error"));
             }
         } catch (error) {
-            console.error("Error removing item from cart:", error); // Loguj błąd
+            console.error("Error removing item from cart:", error);
             alert("There was an error removing the item from your cart.");
         }
     };

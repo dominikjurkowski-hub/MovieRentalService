@@ -1,11 +1,36 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Layout() {
     const getYear = new Date().getFullYear();
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const [darkMode, setDarkMode] = useState(false);
+    const [cartTotalPrice, setCartTotalPrice] = useState(0);
+
+    // Funkcja do aktualizacji sumy cen
+    const updateCartTotalPrice = async () => {
+        if (token) {
+            const response = await fetch("http://localhost:5000/api/cart", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const totalPrice = data.reduce((sum, movie) => sum + movie.price, 0);
+                setCartTotalPrice(totalPrice);
+            } else {
+                console.error("Failed to fetch cart items");
+            }
+        }
+    };
+
+    // Efekt do pobrania sumy cen przy pierwszym renderowaniu
+    useEffect(() => {
+        updateCartTotalPrice();
+    }, [token]);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -46,7 +71,15 @@ function Layout() {
                                 </li>
                                 <li className="nav-item">
                                     <Link className={`nav-link fs-5 ${darkMode ? "text-light" : "text-dark"}`} to="/cart">
-                                        Cart
+    <span className="d-flex align-items-center">
+        Cart
+        <span
+            className={`badge rounded-pill ms-2 ${cartTotalPrice > 0 ? "bg-success" : "bg-secondary"}`}
+            style={{ fontSize: "1.1rem" }}
+        >
+            ${cartTotalPrice.toFixed(2)}
+        </span>
+    </span>
                                     </Link>
                                 </li>
                             </ul>
@@ -85,7 +118,8 @@ function Layout() {
 
             <main className="flex-grow-1">
                 <div className="container py-4">
-                    <Outlet />
+                    {/* Przekazanie funkcji aktualizującej do Outlet */}
+                    <Outlet context={{ updateCartTotalPrice }} />
                 </div>
             </main>
 
