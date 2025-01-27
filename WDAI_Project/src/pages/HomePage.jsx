@@ -13,7 +13,7 @@ function HomePage() {
             movies.map(async (movie) => {
                 if (movie.imdb_code) {
                     const omdbResponse = await fetch(
-                        `https://www.omdbapi.com/?i=${movie.imdb_code}&apikey=8fae3adb`
+                        `https://www.omdbapi.com/?i=${movie.imdb_code}&apikey=e23afbb8`
                     );
 
                     if (omdbResponse.ok) {

@@ -1,6 +1,7 @@
 // backend/routes/reviewRoutes.js
 import express from 'express';
 import { getReviews, addReview } from '../controllers/reviewController.js';
+import {authenticate} from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -8,6 +9,6 @@ const router = express.Router();
 router.get('/:movieId', getReviews);
 
 // Dodaj nową opinię
-router.post('/', addReview);
+router.post('/', authenticate, addReview);
 
 export default router;
