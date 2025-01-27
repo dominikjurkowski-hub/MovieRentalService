@@ -64,7 +64,7 @@ function CartPage() {
             <h3 className="pb-2">Your Cart</h3>
             <div className="row">
                 {cartItems.map((movie) => (
-                    <div className="col-md-4 mb-4" key={movie.id}>
+                    <div className="col-md-3 mb-4" key={movie.id}>
                         <MovieInCart
                             movie={movie}
                             onRemove={() => handleRemoveFromCart(movie.id)}

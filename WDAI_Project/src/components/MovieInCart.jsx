@@ -16,31 +16,37 @@ function MovieInCart({ movie, onRemove }) {
 
     return (
 
-        <div className="card h-100" onClick={handleMovieClick} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+        <div className="card h-100" onClick={handleMovieClick}
+             style={{ alignItems: 'center', cursor: 'pointer'}}>
 
             <img
                 src={movie.medium_cover_image}
                 alt={movie.title_long}
                 className="card-img-top"
-                style={{ width: "300px", height: "350px", objectFit: "cover" }}
+                style={{width: "295px", height: "350px", objectFit: "cover"}}
             />
-            <div className="card-body">
-                <h5 className="card-title">{movie.title_long}</h5>
-                <p className="card-text">
-                    <strong>Rating:</strong> {movie.rating}
+            <div className="card-body p-2" > {/* Zmniejsz padding wewnątrz card-body */}
+                <h5 className="card-title mb-3">{movie.title_long}</h5> {/* Normalna grubość czcionki dla tytułu */}
+                <p className="card-text mb-1">
+                    <span className="fw-medium">Rating:</span> {movie.rating} {/* Użyj fw-medium zamiast <strong> */}
                 </p>
-                <p className="card-text">
-                    <strong>Director:</strong> {movie.Director || "Unknown"}
+                <p className="card-text mb-1">
+                    <span
+                        className="fw-medium">Director:</span> {movie.Director || "Unknown"} {/* Użyj fw-medium zamiast <strong> */}
                 </p>
-                <p className="card-text">
-                    <strong>Price:</strong> {movie.price?.toFixed(2) || "N/A"} $
+                <p className="card-text mb-3">
+                    <span
+                        className="fw-medium">Price:</span> {movie.price?.toFixed(2) || "N/A"} $ {/* Użyj fw-medium zamiast <strong> */}
                 </p>
-                <button
-                    className="btn btn-danger mt-2"
-                    onClick={handleRemoveClick} // Użyj nowej funkcji
-                >
-                    Remove from Cart
-                </button>
+                <div className="d-flex flex-column align-items-center text-center">
+                    <button
+                        className="btn btn-danger btn-sm"
+                        onClick={handleRemoveClick}
+                    >
+                        Remove from Cart
+                    </button>
+                </div>
+
             </div>
         </div>
     );
