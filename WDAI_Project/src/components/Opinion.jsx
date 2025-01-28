@@ -4,8 +4,8 @@ function Opinion({ name, date, rating, text, avatar }) {
         <div className="opinion-card p-3 mb-3 border rounded shadow-sm">
             <div className="d-flex align-items-center mb-2">
                 <img
-                    src={avatar || "https://avatar.iran.liara.run/public"}
-                    alt={name}
+                    src={"https://avatar.iran.liara.run/public"}
+                    alt={''}
                     className="rounded-circle me-2"
                     style={{ width: '50px', height: '50px' }}
                 />

@@ -60,8 +60,8 @@ function CartPage() {
     }
 
     return (
-        <div className="container py-5">
-            <h2>Your Cart</h2>
+        <div className="container py-1">
+            <h3 className="pb-2">Your Cart</h3>
             <div className="row">
                 {cartItems.map((movie) => (
                     <div className="col-md-4 mb-4" key={movie.id}>

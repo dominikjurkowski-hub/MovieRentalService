@@ -16,6 +16,9 @@ export const getReviews = (req, res) => {
 // Dodaj nową opinię
 export const addReview = (req, res) => {
     const { movieId, name, rating, text, date } = req.body;
+    if (!movieId || !name || !rating || !date || !text) {
+        return res.status(400).json({ error: 'Wszystkie pola są wymagane.' });
+    }
     const sql = 'INSERT INTO reviews (movieId, name, rating, text, date) VALUES (?, ?, ?, ?, ?)';
     const params = [movieId, name, rating, text, date];
 

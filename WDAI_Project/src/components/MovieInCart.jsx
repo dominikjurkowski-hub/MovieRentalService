@@ -15,12 +15,14 @@ function MovieInCart({ movie, onRemove }) {
     };
 
     return (
-        <div className="card h-100" onClick={handleMovieClick} style={{ cursor: "pointer" }}>
+
+        <div className="card h-100" onClick={handleMovieClick} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+
             <img
-                src={movie.large_cover_image}
+                src={movie.medium_cover_image}
                 alt={movie.title_long}
                 className="card-img-top"
-                style={{ width: "100%", height: "auto" }}
+                style={{ width: "300px", height: "350px", objectFit: "cover" }}
             />
             <div className="card-body">
                 <h5 className="card-title">{movie.title_long}</h5>
@@ -47,11 +49,12 @@ function MovieInCart({ movie, onRemove }) {
 MovieInCart.propTypes = {
     movie: PropTypes.shape({
         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-        large_cover_image: PropTypes.string.isRequired,
+        medium_cover_image: PropTypes.string.isRequired,
         title_long: PropTypes.string.isRequired,
         rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         genres: PropTypes.arrayOf(PropTypes.string),
         Director: PropTypes.string,
+        price: PropTypes.number,
     }).isRequired,
     onRemove: PropTypes.func.isRequired,
 };

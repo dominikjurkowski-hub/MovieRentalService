@@ -9,6 +9,6 @@ const router = express.Router();
 router.get('/:movieId', getReviews);
 
 // Dodaj nową opinię
-router.post('/',authenticate ,addReview);
+router.post('/', authenticate, addReview);
 
 export default router;

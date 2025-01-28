@@ -5,9 +5,10 @@ import { addToCart, getCart, removeFromCart } from '../controllers/cartControlle
 const router = express.Router();
 
 
-router.post('/cart',authenticate, addToCart);
-router.get('/cart',authenticate, getCart);
-router.delete('/cart/:movieId',authenticate, removeFromCart);
+
+router.post('/cart', authenticate, addToCart);
+router.get('/cart', authenticate, getCart);
+router.delete('/cart/:movieId', authenticate, removeFromCart);
 
 
 export default router;
