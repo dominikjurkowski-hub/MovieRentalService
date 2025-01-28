@@ -3,6 +3,7 @@ import Opinion from "../components/Opinion.jsx";
 import AddOpinionForm from "../components/AddOpinionForm.jsx";
 import { useEffect, useState } from "react";
 
+
 function MovieDetailsPage() {
     const location = useLocation();
     const navigate = useNavigate();
@@ -12,6 +13,9 @@ function MovieDetailsPage() {
     const token = localStorage.getItem("token");
     const { updateCartTotalPrice } = useOutletContext(); // Odbieramy funkcję z kontekstu
     const [averageRating, setAverageRating] = useState('');
+    const [currentUserId, setCurrentUserId] = useState(null);
+
+
 
     if (!movie) {
         return (
@@ -21,6 +25,33 @@ function MovieDetailsPage() {
             </div>
         );
     }
+
+    useEffect(() => {
+        // Sprawdź, czy token jest obecny w localStorage
+        if (token) {
+            // Sprawdzenie userId na podstawie tokenu
+            const fetchUserData = async () => {
+                try {
+                    const response = await fetch("http://localhost:5000/api/auth/user", {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+
+                    if (response.ok) {
+                        const userData = await response.json();
+                        setCurrentUserId(userData.id); // Zakładając, że backend zwraca userId
+                    } else {
+                        console.error("Error fetching user data:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                }
+            };
+
+            fetchUserData();
+        }
+    });
 
     useEffect(() => {
         // Sprawdź, czy film jest już w koszyku użytkownika
@@ -56,8 +87,7 @@ function MovieDetailsPage() {
                 const data = await response.json();
                 if (response.ok) {
                     setOpinions(data);
-
-                        if (data.length > 0) {
+                    if (data.length > 0) {
                         const totalRating = data.reduce((sum, review) => sum + review.rating, 0);
                         const average = totalRating / data.length;
                         setAverageRating(average.toFixed(2));
@@ -96,6 +126,54 @@ function MovieDetailsPage() {
         } catch (error) {
             console.error("Error submitting opinion:", error);
             alert("There was an error submitting your opinion.");
+        }
+    };
+
+    const editOpinion = async (id, updatedOpinion) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/reviews/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(updatedOpinion),
+            });
+
+            if (response.ok) {
+                setOpinions((prevOpinions) =>
+                    prevOpinions.map((opinion) =>
+                        opinion.id === id ? { ...opinion, ...updatedOpinion } : opinion
+                    )
+                );
+            } else {
+                const error = await response.json();
+                alert('Error: ' + error.message);
+            }
+        } catch (err) {
+            console.error('Error updating opinion:', err);
+            alert('There was an error updating the opinion.');
+        }
+    };
+
+    const deleteOpinion = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/reviews/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                setOpinions((prevOpinions) => prevOpinions.filter((opinion) => opinion.id !== id));
+            } else {
+                const error = await response.json();
+                alert('Error: ' + error.message);
+            }
+        } catch (err) {
+            console.error('Error deleting opinion:', err);
+            alert('There was an error deleting the opinion.');
         }
     };
 
@@ -199,11 +277,12 @@ function MovieDetailsPage() {
             </div>
 
             <div className="container py-5">
-            <h3>Opinions {averageRating}</h3>
+                <h3>Opinions {averageRating}</h3>
                 <AddOpinionForm onAddOpinion={addOpinion} />
                 <div className="opinion-container mb-4">
                     {opinions.map((opinion, index) => (
-                        <Opinion key={index} {...opinion} />
+                        <Opinion key={index} currentUserId = {currentUserId} onEdit={editOpinion}
+                                 onDelete={deleteOpinion} {...opinion}/>
                     ))}
                 </div>
             </div>

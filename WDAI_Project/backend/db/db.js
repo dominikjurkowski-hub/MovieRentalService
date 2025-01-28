@@ -64,8 +64,7 @@ db.serialize(() => {
         }
     });
 
-
-    // Tabela reviews (istniejąca)
+    // Tabela reviews (dodana kolumna userId)
     db.run(`
         CREATE TABLE IF NOT EXISTS reviews (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,7 +72,9 @@ db.serialize(() => {
             name TEXT,
             rating INTEGER,
             text TEXT,
-            date TEXT
+            date TEXT,
+            userId INTEGER,
+            FOREIGN KEY (userId) REFERENCES users(id)
         )
     `, (err) => {
         if (err) {
@@ -83,6 +84,7 @@ db.serialize(() => {
         }
     });
 });
+
 
 
 

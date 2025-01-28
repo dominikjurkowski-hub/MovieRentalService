@@ -40,3 +40,18 @@ export const login = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+export const getUserData = async (req, res) => {
+    try {
+        const userId = req.user.userId;  // Odczytujemy userId z middleware
+        const user = await User.findById(userId);  // Funkcja findById w modelu User
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+
+        res.json({ id: user.id, email: user.email });  // Zwracamy dane użytkownika
+    } catch (err) {
+        res.status(500).json({ error: 'Server error.' });
+    }
+};

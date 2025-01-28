@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 
 class User {
     static async create(email, password) {
-        if ( await this.findByEmail(email) ) {
+        if (await this.findByEmail(email)) {
             throw new Error('User already exists');
         }
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -22,6 +22,15 @@ class User {
     static async findByEmail(email) {
         return new Promise((resolve, reject) => {
             db.get('SELECT * FROM users WHERE email = ?', [email], (err, row) => {
+                if (err) reject(err);
+                else resolve(row);
+            });
+        });
+    }
+
+    static async findById(id) {
+        return new Promise((resolve, reject) => {
+            db.get('SELECT * FROM users WHERE id = ?', [id], (err, row) => {
                 if (err) reject(err);
                 else resolve(row);
             });
