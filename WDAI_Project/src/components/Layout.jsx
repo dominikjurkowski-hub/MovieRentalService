@@ -34,9 +34,14 @@ function Layout() {
 
     const handleLogout = () => {
         localStorage.removeItem("token");
+        setCartTotalPrice(0);
         alert("You have been logged out.");
         navigate("/login");
     };
+
+    const isTokenGiven = () => {
+        return !!localStorage.getItem("token");
+    }
 
     const toggleDarkMode = () => {
         setDarkMode(!darkMode);
@@ -75,7 +80,7 @@ function Layout() {
         Cart
         <span
             className={`badge rounded-pill ms-2 ${cartTotalPrice > 0 ? "bg-success" : "bg-secondary"}`}
-            style={{ fontSize: "1.1rem" }}
+            style={{ fontSize: "1.1rem", display: isTokenGiven() ? "inline" : "none" }}
         >
             ${cartTotalPrice.toFixed(2)}
         </span>

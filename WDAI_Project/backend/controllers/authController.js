@@ -11,7 +11,11 @@ export const register = async (req, res) => {
         const userId = await User.create(email, password);
         res.status(201).json({ message: 'User registered successfully', userId });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        if (err.message === 'User already exists') {
+            res.status(409).json({ error: 'User already exists' });
+        } else {
+            res.status(500).json({ error: err.message });
+        }
     }
 };
 
