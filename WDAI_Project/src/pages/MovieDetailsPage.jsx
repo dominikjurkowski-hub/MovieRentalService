@@ -50,8 +50,9 @@ function MovieDetailsPage() {
             };
 
             fetchUserData();
+            console.log(currentUserId, "siema");
         }
-    });
+    }, []);//rendering only once when component is mounted
 
 
 
@@ -84,31 +85,33 @@ function MovieDetailsPage() {
     }, []);//rendering only once when component is mounted
 
 
+    const fetchOpinions = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/reviews/${movie.id}`);
+            const data = await response.json();
+            if (response.ok) {
+                setOpinions(data);
+                if (data.length > 0) {
+                    const totalRating = data.reduce((sum, review) => sum + review.rating, 0);
+                    const average = totalRating / data.length;
+                    setAverageRating(average.toFixed(2));
+                } else {
+                    setAverageRating('');
+                }
+            } else {
+                console.error("Error fetching opinions:", data.error);
+            }
+        } catch (error) {
+            console.error("Error fetching opinions:", error);
+        }
+    };
+
 
     useEffect(() => {
-        const fetchOpinions = async () => {
-            try {
-                const response = await fetch(`http://localhost:5000/api/reviews/${movie.id}`);
-                const data = await response.json();
-                if (response.ok) {
-                    setOpinions(data);
-                    if (data.length > 0) {
-                        const totalRating = data.reduce((sum, review) => sum + review.rating, 0);
-                        const average = totalRating / data.length;
-                        setAverageRating(average.toFixed(2));
-                    } else {
-                        setAverageRating('');
-                    }
-                } else {
-                    console.error("Error fetching opinions:", data.error);
-                }
-            } catch (error) {
-                console.error("Error fetching opinions:", error);
-            }
-        };
-
         fetchOpinions();
-    }, [movie.id, opinions]);
+    }, [movie.id]);
+
+    console.log(currentUserId, "siema");
 
 
     const addOpinion = async (newOpinion) => {
@@ -125,6 +128,7 @@ function MovieDetailsPage() {
             const data = await response.json();
             if (response.ok) {
                 setOpinions((prevOpinions) => [...prevOpinions, data]); // Dodaj nową opinię do stanu
+                fetchOpinions(); // Pobierz opinie ponownie, aby zaktualizować średnią ocenę
             } else {
                 alert("Error: " + data.error);
             }
@@ -151,6 +155,7 @@ function MovieDetailsPage() {
                         opinion.id === id ? { ...opinion, ...updatedOpinion } : opinion
                     )
                 );
+                fetchOpinions();
             } else {
                 const error = await response.json();
                 alert('Error: ' + error.message);
