@@ -16,7 +16,7 @@ function Order({ order }) {
         <div className="container py-4">
             <div className="card shadow-sm">
                 <div className="card-header">
-                    <h2 className="mb-0">Order Details</h2>
+                    <h4 className="mb-0">Order Details</h4>
                 </div>
                 <div className="card-body">
                     <div className="row">
