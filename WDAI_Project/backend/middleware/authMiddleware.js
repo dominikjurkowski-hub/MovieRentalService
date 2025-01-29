@@ -1,6 +1,5 @@
 
 import jwt from 'jsonwebtoken';
-import db from "../db/db.js";
 
 const SECRET_KEY = 'your-secret-key';
 

@@ -4,7 +4,7 @@ class Order {
     static async addAnOrder(userId, address, paymentMethod, date, totalPrice, status, cartItems) {
         return new Promise((resolve,reject) => {
             db.run(
-                'INSERT INTO orders (userId, address, paymentMethod, date, totalPrice, status, cartItems) VALUES (?, ?, ?, ?)',
+                'INSERT INTO orders (userId, address, paymentMethod, date, totalPrice, status, cartItems) VALUES (?, ?, ?, ?, ?, ?, ?)',
                 [
                     userId,
                     address,

@@ -89,7 +89,34 @@ function CartPage() {
             return;
         }
 
-        // Tutaj można dodać logikę wysyłania zamówienia do backendu
+        const addOrder = async () => {
+            const response = await fetch("http://localhost:5000/api/orders", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    address,
+                    paymentMethod,
+                    totalPrice: calculateTotalPrice(),
+                    status: "pending",
+                    cartItems,
+                }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                console.log("Order added:", data);
+            } else {
+                console.error("Error adding order:", data.error);
+                alert("Failed to add order: " + (data.error || "Unknown error"));
+            }
+        }
+
+        addOrder();
+
+
         cartItems.map((movie) => {handleRemoveFromCart(movie.id)});
         setCartItems([]);
         setOrderConfirmed(true);

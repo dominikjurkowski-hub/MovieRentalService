@@ -11,7 +11,7 @@ function PlacedOrdersPage() {
 
     const fetchOrders = async () => {
         try {
-            const response = await fetch("http://localhost:5000/api/orders", {
+            const response = await fetch("http://localhost:5000/api/orders/userId", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -35,7 +35,7 @@ function PlacedOrdersPage() {
                     <li key={order.id}>
                         <p>Order ID: {order.id}</p>
                         <p>Order Date: {order.date}</p>
-                        <p>Order Total Price: {order.totalPrice}</p>
+                        <p>Order Total Price: {order.totalPrice}$</p>
                         <p>Order Status: {order.status}</p>
                     </li>
                 ))}

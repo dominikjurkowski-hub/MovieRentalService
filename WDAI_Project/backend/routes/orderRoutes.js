@@ -3,7 +3,7 @@ import {authenticate} from "../middleware/authMiddleware.js";
 import {addAnOrder, getOrders} from "../controllers/orderController.js";
 const router = express.Router();
 
-router.post('/orders', authenticate, addAnOrder);
-router.get('/orders', authenticate, getOrders);
+router.post('/', authenticate, addAnOrder);
+router.get('/userId', authenticate, getOrders);
 
 export default router;
