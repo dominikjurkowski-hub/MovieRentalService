@@ -2,6 +2,7 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import logo from '../assets/logo.png';
 import avatar from '../assets/avatar.png';
+import { FaHome, FaShoppingCart, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa'; // Importing icons
 
 function Layout() {
     const getYear = new Date().getFullYear();
@@ -58,7 +59,7 @@ function Layout() {
                             <img src={logo} alt="Logo" width="55px" style={{borderRadius: 5}}/>
                         </Link>
                         <button
-                            className="navbar-toggler"
+                            className={`navbar-toggler ${darkMode ? "navbar-dark" : "navbar-light"}`}
                             type="button"
                             data-bs-toggle="collapse"
                             data-bs-target="#navbarNav"
@@ -68,57 +69,59 @@ function Layout() {
                         >
                             <span className="navbar-toggler-icon"></span>
                         </button>
+
                         <div className="collapse navbar-collapse" id="navbarNav">
-                            <ul className="navbar-nav me-auto">
-                                <li className="nav-item">
-                                    <Link className={`nav-link fs-5 ${darkMode ? "text-light" : "text-dark"}`} to="/">
+                            <ul className="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-start align-items-center">
+                                <li className="nav-item mx-2">
+                                    <Link
+                                        className={`nav-link fs-5 d-flex justify-content-center align-items-center ${darkMode ? "text-light" : "text-dark"}`}
+                                        to="/">
+                                        <FaHome className="me-2"/>
                                         Home
                                     </Link>
                                 </li>
-                                <li className="nav-item">
-                                    <Link className={`nav-link fs-5 ${darkMode ? "text-light" : "text-dark"}`} to="/cart">
-    <span className="d-flex align-items-center">
-        Cart
-        <span
-            className={`badge rounded-pill ms-2 ${cartTotalPrice > 0 ? "bg-success" : "bg-secondary"}`}
-            style={{ fontSize: "1.1rem", display: isTokenGiven() ? "inline" : "none" }}
-        >
-            ${cartTotalPrice.toFixed(2)}
-        </span>
-    </span>
+                                <li className="nav-item mx-2">
+                                    <Link
+                                        className={`nav-link fs-5 d-flex justify-content-center align-items-center ${darkMode ? "text-light" : "text-dark"}`}
+                                        to="/cart">
+                                        <FaShoppingCart className="me-2"/>
+                                        <span>Cart</span>
+                                        {isTokenGiven() && (
+                                            <span
+                                                className={`badge ms-2 ${cartTotalPrice > 0 ? "bg-success" : "bg-secondary"}`}>
+                ${cartTotalPrice.toFixed(2)}
+              </span>
+                                        )}
                                     </Link>
                                 </li>
                             </ul>
-                            <ul className="navbar-nav">
-                                {token ? (
-                                    <li className="nav-item ">
-                                        <Link className={`nav-link fs-5 ${darkMode ? "text-light" : "text-dark"}`} to="/placedOrders">
-                                            <img src= {avatar} width="25px" height="25px" title="zamówienia" alt="Author Freepik" />
-                                        </Link>
-                                    </li>
-                                ) : null}
-                                <li className="nav-item me-3">
+
+                            <ul className="navbar-nav ms-auto">
+                                <li className="nav-item">
                                     <button
                                         className="btn btn-link nav-link fs-5"
                                         onClick={toggleDarkMode}
-                                        style={{ textDecoration: "none" }}
+                                        style={{textDecoration: "none"}}
                                     >
                                         {darkMode ? "🌙" : "☀️"}
                                     </button>
                                 </li>
                                 {token ? (
-                                    <li className="nav-item ms-auto">
+                                    <li className="nav-item">
                                         <button
                                             className={`btn btn-link nav-link fs-5 ${darkMode ? "text-light" : "text-dark"}`}
                                             onClick={handleLogout}
-                                            style={{ textDecoration: "none" }}
+                                            style={{textDecoration: "none"}}
                                         >
+                                            <FaSignOutAlt className="me-2"/>
                                             Logout
                                         </button>
                                     </li>
                                 ) : (
                                     <li className="nav-item">
-                                        <Link className={`nav-link fs-5 ${darkMode ? "text-light" : "text-dark"}`} to="/login">
+                                        <Link className={`nav-link fs-5 ${darkMode ? "text-light" : "text-dark"}`}
+                                              to="/login">
+                                            <FaSignInAlt className="me-2"/>
                                             Login
                                         </Link>
                                     </li>
@@ -127,12 +130,13 @@ function Layout() {
                         </div>
                     </div>
                 </nav>
+
             </header>
 
             <main className="flex-grow-1">
                 <div className="container py-4">
                     {/* Przekazanie funkcji aktualizującej do Outlet */}
-                    <Outlet context={{ updateCartTotalPrice }} />
+                    <Outlet context={{updateCartTotalPrice}}/>
                 </div>
             </main>
 
