@@ -30,7 +30,7 @@ db.serialize(() => {
         CREATE TABLE IF NOT EXISTS cart (
             IDcart INTEGER PRIMARY KEY AUTOINCREMENT,
             userId INTEGER,
-            id TEXT,
+            id INTEGER,
             url TEXT,
             imdb_code TEXT,
             title TEXT,

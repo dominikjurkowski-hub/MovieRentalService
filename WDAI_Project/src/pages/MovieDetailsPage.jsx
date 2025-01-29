@@ -53,6 +53,8 @@ function MovieDetailsPage() {
         }
     });
 
+
+
     useEffect(() => {
         // Sprawdź, czy film jest już w koszyku użytkownika
         const checkIfMovieIsInCart = async () => {
@@ -65,6 +67,7 @@ function MovieDetailsPage() {
 
                 if (response.ok) {
                     const cartItems = await response.json();
+
                     const isAlreadyInCart = cartItems.some((item) => item.id === movie.id);
                     setIsInCart(isAlreadyInCart);
                 } else {
@@ -78,7 +81,9 @@ function MovieDetailsPage() {
         if (token) {
             checkIfMovieIsInCart();
         }
-    }, [movie, token]);
+    }, []);//rendering only once when component is mounted
+
+
 
     useEffect(() => {
         const fetchOpinions = async () => {
@@ -185,11 +190,6 @@ function MovieDetailsPage() {
         }
 
         try {
-            // Oblicz cenę filmu (jeśli nie jest przekazana w obiekcie movie)
-            const movieWithPrice = {
-                ...movie,
-                price: (12 + 2 * Math.log(movie.id) + 4 * Math.sin(movie.id)) / 4,
-            };
 
             const response = await fetch("http://localhost:5000/api/cart", {
                 method: "POST",
@@ -197,7 +197,7 @@ function MovieDetailsPage() {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ movie: movieWithPrice }),
+                body: JSON.stringify({ movie: movie }),
             });
 
             if (response.ok) {
