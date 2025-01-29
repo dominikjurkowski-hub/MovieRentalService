@@ -145,7 +145,7 @@ function CartPage() {
 
             <div className="text-center mt-4">
                 <button className="btn btn-primary" style={{display: isFormVisible || orderConfirmed ? "none" : "inline" }} onClick={handleOrderClick}>
-                    Złóż zamówienie
+                    Place an Order
                 </button>
             </div>
 
