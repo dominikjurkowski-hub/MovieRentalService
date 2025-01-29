@@ -24,6 +24,17 @@ export const addReview = (req, res) => {
         return res.status(400).json({ error: 'Wszystkie pola są wymagane.' });
     }
 
+    db.all('SELECT * FROM reviews WHERE movieId = ? AND userId = ?', [movieId, userId], (err, rows) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+
+        if (rows.length > 0) {
+            return res.status(400).json({ error: 'Nie możesz dodać więcej niż jednej recenzji.' });
+        }
+    });
+
+
     // Tworzymy datę, która będzie zapisana w recenzji
     const date = new Date().toLocaleDateString();
 

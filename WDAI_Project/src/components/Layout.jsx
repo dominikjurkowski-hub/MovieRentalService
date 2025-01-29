@@ -10,13 +10,14 @@ import loginDark from '../assets/loginDark.png';
 import logoutDark from '../assets/logoutDark.png';
 import cartDark from '../assets/cartDark.png';
 import homeDark from '../assets/homeDark.png';
+import {useDarkMode} from './DarkModeContext';
 
 function Layout() {
     const getYear = new Date().getFullYear();
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
-    const [darkMode, setDarkMode] = useState(false);
     const [cartTotalPrice, setCartTotalPrice] = useState(0);
+    const { darkMode, toggleDarkMode } = useDarkMode();
 
     const updateCartTotalPrice = async () => {
         if (token) {
@@ -50,10 +51,6 @@ function Layout() {
     const isTokenGiven = () => {
         return !!localStorage.getItem("token");
     }
-
-    const toggleDarkMode = () => {
-        setDarkMode(!darkMode);
-    };
 
     return (
         <div className={`d-flex flex-column min-vh-100 ${darkMode ? "bg-dark text-light" : "bg-light text-dark"}`}>

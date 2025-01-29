@@ -30,10 +30,9 @@ function PlacedOrdersPage() {
 
     return (
         <div>
-            <h2>Placed Orders</h2>
             <ul>
-                {orders.map((order) => (
-                    <Order key={order.orderId} order={order} />
+                {orders.map((order, index) => (
+                    <Order key={index} order={order} />
                 ))}
             </ul>
         </div>

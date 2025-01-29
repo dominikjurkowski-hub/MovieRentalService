@@ -1,12 +1,14 @@
 import { Dropdown, Modal, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import PropTypes from "prop-types";
+import {useDarkMode} from "./DarkModeContext.jsx";
 
 function Opinion({ id, name, date, rating, text, avatar, currentUserId, userId, onEdit, onDelete, isAdmin }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editedText, setEditedText] = useState(text);
     const [editedRating, setEditedRating] = useState(rating);
     const [hovered, setHovered] = useState(0);
+    const {darkMode} = useDarkMode();
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -42,7 +44,7 @@ function Opinion({ id, name, date, rating, text, avatar, currentUserId, userId, 
                 {[...Array(5)].map((_, index) => (
                     <span
                         key={index}
-                        className={index < rating ? "text-warning" : "text-muted"}
+                        className={index < rating ? "text-warning" : darkMode ? "text-light" : "text-muted"}
                     >
                         ★
                     </span>
@@ -92,8 +94,7 @@ function Opinion({ id, name, date, rating, text, avatar, currentUserId, userId, 
                                         onMouseLeave={() => setHovered(0)}
                                         className={`${
                                             rate <= (hovered || editedRating)
-                                                ? "text-warning"
-                                                : "text-muted"
+                                                ? "text-warning" : "text-muted"
                                         }`}
                                     >
                             ★

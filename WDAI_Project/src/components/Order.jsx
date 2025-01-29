@@ -16,7 +16,7 @@ function Order({ order }) {
         <div className="container py-4">
             <div className="card shadow-sm">
                 <div className="card-header">
-                    <h4 className="mb-0">Order Details</h4>
+                    <h4 className="mb-0 bold">Order Details nr {order.id}</h4>
                 </div>
                 <div className="card-body">
                     <div className="row">
@@ -60,7 +60,7 @@ function Order({ order }) {
 
 Order.propTypes = {
     order: PropTypes.shape({
-        userId: PropTypes.string.isRequired,
+        userId: PropTypes.number.isRequired,
         address: PropTypes.string.isRequired,
         paymentMethod: PropTypes.string.isRequired,
         date: PropTypes.string.isRequired,

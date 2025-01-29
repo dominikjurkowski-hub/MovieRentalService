@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useParams } from "react-router-dom";
+import {useDarkMode} from "./DarkModeContext.jsx";
 
 function AddOpinionForm({ onAddOpinion }) {
     const [name, setName] = useState("");
@@ -10,6 +11,7 @@ function AddOpinionForm({ onAddOpinion }) {
     const [text, setText] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { movieId } = useParams();
+    const {darkMode} = useDarkMode(); //setter niepotrzebny
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -66,7 +68,8 @@ function AddOpinionForm({ onAddOpinion }) {
                                 onClick={() => handleClick(rate)}
                                 onMouseEnter={() => handleMouseEnter(rate)}
                                 onMouseLeave={handleMouseLeave}
-                                className={`${rate <= (hovered || rating) ? "text-warning" : "text-muted"}`}
+                                className={`${rate <= (hovered || rating) ?
+                                    "text-warning" : darkMode ? "text-light" : "text-muted"}`}
                             >
                                 ★
                             </span>
