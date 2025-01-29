@@ -56,7 +56,7 @@ export const addReview = (req, res) => {
 export const editReview = (req, res) => {
     const { reviewId } = req.params; // Id recenzji, którą chcemy edytować
     const { rating, text } = req.body; // Nowe dane recenzji
-    const { userId } = req.user; // userId z tokena JWT
+
 
     // Sprawdzamy, czy recenzja istnieje
     db.get('SELECT * FROM reviews WHERE id = ?', [reviewId], (err, row) => {
@@ -68,10 +68,7 @@ export const editReview = (req, res) => {
             return res.status(404).json({ error: 'Recenzja nie została znaleziona' });
         }
 
-        // Sprawdzamy, czy recenzję dodał ten sam użytkownik
-        if (row.userId !== userId) {
-            return res.status(403).json({ error: 'Nie masz uprawnień do edytowania tej recenzji' });
-        }
+
 
         // Aktualizujemy recenzję w bazie danych
         const sql = 'UPDATE reviews SET rating = ?, text = ? WHERE id = ?';
@@ -90,7 +87,6 @@ export const editReview = (req, res) => {
 // Usuwanie recenzji
 export const deleteReview = (req, res) => {
     const { reviewId } = req.params; // Id recenzji, którą chcemy usunąć
-    const { userId } = req.user; // userId z tokena JWT
 
     // Sprawdzamy, czy recenzja istnieje
     db.get('SELECT * FROM reviews WHERE id = ?', [reviewId], (err, row) => {
@@ -102,10 +98,7 @@ export const deleteReview = (req, res) => {
             return res.status(404).json({ error: 'Recenzja nie została znaleziona' });
         }
 
-        // Sprawdzamy, czy recenzję dodał ten sam użytkownik
-        if (row.userId !== userId) {
-            return res.status(403).json({ error: 'Nie masz uprawnień do usuwania tej recenzji' });
-        }
+
 
         // Usuwamy recenzję z bazy danych
         const sql = 'DELETE FROM reviews WHERE id = ?';

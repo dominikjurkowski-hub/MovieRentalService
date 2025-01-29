@@ -5,10 +5,12 @@ const SECRET_KEY = 'your-secret-key'; // Klucz do podpisywania tokenów JWT
 
 // Funkcja rejestracji
 export const register = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;  // Pobieramy `role` z req.body
+
+    const newRole = role === 'admin' ? 'admin' : 'user';  // Jeśli nie admin, to domyślnie user
 
     try {
-        const userId = await User.create(email, password);
+        const userId = await User.create(email, password, newRole); // Przekazujemy `role`
         res.status(201).json({ message: 'User registered successfully', userId });
     } catch (err) {
         if (err.message === 'User already exists') {
@@ -34,13 +36,16 @@ export const login = async (req, res) => {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
 
-        const token = jwt.sign({ userId: user.id }, SECRET_KEY, { expiresIn: '1h' });
-        res.json({ token });
+        // 🛠️ Dodajemy `role` do tokena!
+        const token = jwt.sign({ userId: user.id, role: user.role }, SECRET_KEY, { expiresIn: '1h' });
+
+        res.json({ token, role: user.role });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
 
+// Pobieranie danych użytkownika
 export const getUserData = async (req, res) => {
     try {
         const userId = req.user.userId;  // Odczytujemy userId z middleware
@@ -50,7 +55,7 @@ export const getUserData = async (req, res) => {
             return res.status(404).json({ error: 'User not found.' });
         }
 
-        res.json({ id: user.id, email: user.email });  // Zwracamy dane użytkownika
+        res.json({ id: user.id, email: user.email, role: user.role });  // Zwracamy też rolę
     } catch (err) {
         res.status(500).json({ error: 'Server error.' });
     }

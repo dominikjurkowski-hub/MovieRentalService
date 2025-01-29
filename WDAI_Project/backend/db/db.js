@@ -1,4 +1,5 @@
 import sqlite3 from 'sqlite3';
+import bcrypt from 'bcryptjs';
 
 const db = new sqlite3.Database('./reviews.db', (err) => {
     if (err) {
@@ -15,16 +16,38 @@ db.serialize(() => {
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             email TEXT UNIQUE,
-            password TEXT
+            password TEXT,
+            role TEXT DEFAULT 'user'
         )
-    `, (err) => {
+    `, async (err) => {
         if (err) {
             console.error('Error creating users table:', err);
         } else {
             console.log('Users table created or already exists');
+
+            // Dodajemy admina, jeśli nie istnieje
+            const adminEmail = 'admin@admin.com';
+            const adminPassword = await bcrypt.hash('admin', 10); // Szyfrujemy hasło
+            const adminRole = 'admin';
+
+            db.get('SELECT * FROM users WHERE email = ?', [adminEmail], (err, row) => {
+                if (!row) {
+                    db.run('INSERT INTO users (email, password, role) VALUES (?, ?, ?)',
+                        [adminEmail, adminPassword, adminRole],
+                        (err) => {
+                            if (err) {
+                                console.error('Error inserting admin:', err);
+                            } else {
+                                console.log('Admin user created.');
+                            }
+                        }
+                    );
+                } else {
+                    console.log('Admin user already exists.');
+                }
+            });
         }
     });
-
     // Tabela cart
     db.run(`
         CREATE TABLE IF NOT EXISTS cart (
