@@ -2,7 +2,10 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import logo from '../assets/logo.png';
 import avatar from '../assets/avatar.png';
-import { FaHome, FaShoppingCart, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import logout from '../assets/logout.png';
+import cart from '../assets/cart.png';
+import home from '../assets/home.png';
+import login from '../assets/login.png';
 
 function Layout() {
     const getYear = new Date().getFullYear();
@@ -70,16 +73,15 @@ function Layout() {
                         </button>
 
                         <div className="collapse navbar-collapse justify-content-between" id="navbarNav">
-                            {/* Left Navigation */}
                             <ul className="navbar-nav d-flex align-items-center">
                                 <li className="nav-item mx-2">
                                     <Link className={`nav-link fs-5 ${darkMode ? "text-light" : "text-dark"} d-flex align-items-center`} to="/">
-                                        <FaHome className="me-2" />
+                                        <img src={home} width="25px" height="25px" title="Home" alt="Home by srip" />
                                     </Link>
                                 </li>
                                 <li className="nav-item mx-2">
                                     <Link className={`nav-link fs-5 ${darkMode ? "text-light" : "text-dark"} d-flex align-items-center`} to="/cart">
-                                        <FaShoppingCart className="me-2" />
+                                        <img src={cart} width="30px" height="30px" title="Cart" alt="Cart by Hada Studio" />
                                         <span className="d-flex align-items-center">
                                             <span
                                                 className={`badge rounded-pill ms-2 ${cartTotalPrice > 0 ? "bg-success" : "bg-secondary"}`}
@@ -92,12 +94,11 @@ function Layout() {
                                 </li>
                             </ul>
 
-                            {/* Right Navigation */}
                             <ul className="navbar-nav d-flex align-items-center">
                                 {token && (
                                     <li className="nav-item mx-2">
                                         <Link className={`nav-link fs-5 ${darkMode ? "text-light" : "text-dark"}`} to="/placedOrders">
-                                            <img src={avatar} width="30px" height="30px" title="My Orders" alt="Avatar" className="rounded-circle" />
+                                            <img src={avatar} width="29px" height="29px" title="My Orders" alt="Avatar by Freepik" className="rounded-circle" />
                                         </Link>
                                     </li>
                                 )}
@@ -117,13 +118,13 @@ function Layout() {
                                             onClick={handleLogout}
                                             style={{ textDecoration: "none" }}
                                         >
-                                            <FaSignOutAlt className="me-2" />
+                                            <img src={logout} width="29px" height="29px" title="Logout" alt="Logout by Pixel perfect" />
                                         </button>
                                     </li>
                                 ) : (
                                     <li className="nav-item mx-2">
                                         <Link className={`nav-link fs-5 ${darkMode ? "text-light" : "text-dark"}`} to="/login">
-                                            <FaSignInAlt className="me-2" />
+                                            <img src={login} width="29px" height="29px" title="Login" alt="Login by Pixel" />
                                         </Link>
                                     </li>
                                 )}

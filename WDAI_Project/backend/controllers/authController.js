@@ -36,7 +36,7 @@ export const login = async (req, res) => {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
 
-        // 🛠️ Dodajemy `role` do tokena!
+        //Dodajemy `role` do tokena!
         const token = jwt.sign({ userId: user.id, role: user.role }, SECRET_KEY, { expiresIn: '1h' });
 
         res.json({ token, role: user.role });

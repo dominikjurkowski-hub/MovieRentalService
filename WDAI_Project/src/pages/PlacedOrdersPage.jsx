@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import Order from "../components/Order.jsx";
 
 function PlacedOrdersPage() {
     const token = localStorage.getItem("token");
@@ -32,12 +33,7 @@ function PlacedOrdersPage() {
             <h2>Placed Orders</h2>
             <ul>
                 {orders.map((order) => (
-                    <li key={order.id}>
-                        <p>Order ID: {order.id}</p>
-                        <p>Order Date: {order.date}</p>
-                        <p>Order Total Price: {order.totalPrice}$</p>
-                        <p>Order Status: {order.status}</p>
-                    </li>
+                    <Order key={order.orderId} order={order} />
                 ))}
             </ul>
         </div>

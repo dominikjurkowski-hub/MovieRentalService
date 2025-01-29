@@ -1,7 +1,7 @@
 
 import jwt from 'jsonwebtoken';
 
-const SECRET_KEY = 'your-secret-key';
+const SECRET_KEY = 'your-secret-key'; //normalnie trzymamy w np w .env
 
 export const authenticate = (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');

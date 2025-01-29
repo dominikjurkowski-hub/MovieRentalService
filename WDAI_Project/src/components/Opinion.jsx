@@ -1,5 +1,6 @@
 import { Dropdown, Modal, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
+import PropTypes from "prop-types";
 
 function Opinion({ id, name, date, rating, text, avatar, currentUserId, userId, onEdit, onDelete, isAdmin }) {
     const [isEditing, setIsEditing] = useState(false);
@@ -114,6 +115,20 @@ function Opinion({ id, name, date, rating, text, avatar, currentUserId, userId, 
 
         </div>
     );
+}
+
+Opinion.propTypes = {
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
+    text: PropTypes.string.isRequired,
+    avatar: PropTypes.string,
+    currentUserId: PropTypes.number.isRequired,
+    userId: PropTypes.number.isRequired,
+    onEdit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    isAdmin: PropTypes.string.isRequired,
 }
 
 export default Opinion;
