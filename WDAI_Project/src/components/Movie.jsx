@@ -43,7 +43,7 @@ function Movie({ movie }) {
 
 Movie.propTypes = {
     movie: PropTypes.shape({
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        id: PropTypes.oneOfType([PropTypes.number]).isRequired,
         large_cover_image: PropTypes.string.isRequired,
         title_long: PropTypes.string.isRequired,
         rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

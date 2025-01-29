@@ -51,8 +51,11 @@ function MovieDetailsPage() {
             };
 
             fetchUserData();
+            console.log(currentUserId, "siema");
         }
-    });
+    }, []);//rendering only once when component is mounted
+
+
 
     useEffect(() => {
         // Sprawdź, czy film jest już w koszyku użytkownika
@@ -66,6 +69,7 @@ function MovieDetailsPage() {
 
                 if (response.ok) {
                     const cartItems = await response.json();
+
                     const isAlreadyInCart = cartItems.some((item) => item.id === movie.id);
                     setIsInCart(isAlreadyInCart);
                 } else {
@@ -79,32 +83,36 @@ function MovieDetailsPage() {
         if (token) {
             checkIfMovieIsInCart();
         }
-    }, [movie, token]);
+    }, []);//rendering only once when component is mounted
+
+
+    const fetchOpinions = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/reviews/${movie.id}`);
+            const data = await response.json();
+            if (response.ok) {
+                setOpinions(data);
+                if (data.length > 0) {
+                    const totalRating = data.reduce((sum, review) => sum + review.rating, 0);
+                    const average = totalRating / data.length;
+                    setAverageRating(average.toFixed(2));
+                } else {
+                    setAverageRating('');
+                }
+            } else {
+                console.error("Error fetching opinions:", data.error);
+            }
+        } catch (error) {
+            console.error("Error fetching opinions:", error);
+        }
+    };
+
 
     useEffect(() => {
-        const fetchOpinions = async () => {
-            try {
-                const response = await fetch(`http://localhost:5000/api/reviews/${movie.id}`);
-                const data = await response.json();
-                if (response.ok) {
-                    setOpinions(data);
-                    if (data.length > 0) {
-                        const totalRating = data.reduce((sum, review) => sum + review.rating, 0);
-                        const average = totalRating / data.length;
-                        setAverageRating(average.toFixed(2));
-                    } else {
-                        setAverageRating('');
-                    }
-                } else {
-                    console.error("Error fetching opinions:", data.error);
-                }
-            } catch (error) {
-                console.error("Error fetching opinions:", error);
-            }
-        };
-
         fetchOpinions();
-    }, [movie.id, opinions]);
+    }, [movie.id]);
+
+    console.log(currentUserId, "siema");
 
 
     const addOpinion = async (newOpinion) => {
@@ -121,6 +129,7 @@ function MovieDetailsPage() {
             const data = await response.json();
             if (response.ok) {
                 setOpinions((prevOpinions) => [...prevOpinions, data]); // Dodaj nową opinię do stanu
+                fetchOpinions(); // Pobierz opinie ponownie, aby zaktualizować średnią ocenę
             } else {
                 alert("Error: " + data.error);
             }
@@ -147,6 +156,7 @@ function MovieDetailsPage() {
                         opinion.id === id ? { ...opinion, ...updatedOpinion } : opinion
                     )
                 );
+                fetchOpinions();
             } else {
                 const error = await response.json();
                 alert('Error: ' + error.message);
@@ -186,11 +196,6 @@ function MovieDetailsPage() {
         }
 
         try {
-            // Oblicz cenę filmu (jeśli nie jest przekazana w obiekcie movie)
-            const movieWithPrice = {
-                ...movie,
-                price: (12 + 2 * Math.log(movie.id) + 4 * Math.sin(movie.id)) / 4,
-            };
 
             const response = await fetch("http://localhost:5000/api/cart", {
                 method: "POST",
@@ -198,7 +203,7 @@ function MovieDetailsPage() {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ movie: movieWithPrice }),
+                body: JSON.stringify({ movie: movie }),
             });
 
             if (response.ok) {

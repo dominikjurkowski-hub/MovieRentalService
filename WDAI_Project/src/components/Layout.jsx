@@ -1,5 +1,7 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import logo from '../assets/logo.png';
+import avatar from '../assets/avatar.png';
 
 function Layout() {
     const getYear = new Date().getFullYear();
@@ -49,12 +51,11 @@ function Layout() {
 
     return (
         <div className={`d-flex flex-column min-vh-100 ${darkMode ? "bg-dark text-light" : "bg-light text-dark"}`}>
-            {/* Header */}
             <header className={`sticky-top shadow-lg ${darkMode ? "bg-dark" : "bg-light"}`}>
-                <nav className="navbar navbar-expand-lg">
+                <nav className="navbar navbar-expand-lg py-1">
                     <div className="container">
                         <Link className={`navbar-brand fs-3 fw-bold ${darkMode ? "text-light" : "text-dark"}`} to="/">
-                            MyApp
+                            <img src={logo} alt="Logo" width="55px" style={{borderRadius: 5}}/>
                         </Link>
                         <button
                             className="navbar-toggler"
@@ -89,6 +90,13 @@ function Layout() {
                                 </li>
                             </ul>
                             <ul className="navbar-nav">
+                                {token ? (
+                                    <li className="nav-item ">
+                                        <Link className={`nav-link fs-5 ${darkMode ? "text-light" : "text-dark"}`} to="/placedOrders">
+                                            <img src= {avatar} width="25px" height="25px" title="zamówienia" alt="Author Freepik" />
+                                        </Link>
+                                    </li>
+                                ) : null}
                                 <li className="nav-item me-3">
                                     <button
                                         className="btn btn-link nav-link fs-5"
