@@ -51,7 +51,6 @@ function MovieDetailsPage() {
             };
 
             fetchUserData();
-            console.log(currentUserId, "siema");
         }
     }, []);//rendering only once when component is mounted
 
@@ -112,7 +111,7 @@ function MovieDetailsPage() {
         fetchOpinions();
     }, [movie.id]);
 
-    console.log(currentUserId, "siema");
+
 
 
     const addOpinion = async (newOpinion) => {
@@ -249,7 +248,7 @@ function MovieDetailsPage() {
                         </div>
                         <div className="col-sm-6 mb-3">
                             <p><strong>Director:</strong> {movie.Director || "Unknown"}</p>
-                            <p><strong>Summary:</strong> {movie.Plot || "No description available."}</p>
+                            <p><strong>Summary:</strong> {movie.Plot || movie.summary || "No description available."}</p>
                             <p><strong>Awards:</strong> {movie.Awards || "N/A"}</p>
                             <br></br>
                         </div>

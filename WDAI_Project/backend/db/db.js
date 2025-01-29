@@ -47,7 +47,9 @@ db.serialize(() => {
                 }
             });
         }
+        ;
     });
+
     // Tabela cart
     db.run(`
         CREATE TABLE IF NOT EXISTS cart (
@@ -87,6 +89,7 @@ db.serialize(() => {
         }
     });
 
+
     // Tabela reviews (dodana kolumna userId)
     db.run(`
         CREATE TABLE IF NOT EXISTS reviews (
@@ -106,9 +109,30 @@ db.serialize(() => {
             console.log('Reviews table created or already exists');
         }
     });
+
+
+    // Tabela orders
+    db.run(`
+            CREATE TABLE IF NOT EXISTS orders (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                userId INTEGER,
+                address TEXT,
+                paymentMethod TEXT,
+                date TEXT,
+                totalPrice REAL,
+                status TEXT,
+                cartItems TEXT,
+                FOREIGN KEY (userId) REFERENCES users(id)
+            )
+        `, (err) => {
+        if (err) {
+            console.error('Error creating orders table:', err);
+        } else {
+            console.log('Orders table created or already exists');
+        }
+    });
+
 });
-
-
 
 
 export default db;

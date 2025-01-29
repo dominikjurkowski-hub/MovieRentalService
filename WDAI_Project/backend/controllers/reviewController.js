@@ -25,7 +25,7 @@ export const addReview = (req, res) => {
     }
 
     // Tworzymy datę, która będzie zapisana w recenzji
-    const date = new Date().toISOString();
+    const date = new Date().toLocaleDateString();
 
     // Zapytanie SQL, aby dodać nową recenzję
     const sql = 'INSERT INTO reviews (movieId, name, rating, text, date, userId) VALUES (?, ?, ?, ?, ?, ?)';
