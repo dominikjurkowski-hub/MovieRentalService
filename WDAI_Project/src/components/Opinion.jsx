@@ -1,7 +1,7 @@
 import { Dropdown, Modal, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
 
-function Opinion({ id, name, date, rating, text, avatar, currentUserId, userId, onEdit, onDelete }) {
+function Opinion({ id, name, date, rating, text, avatar, currentUserId, userId, onEdit, onDelete, isAdmin }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editedText, setEditedText] = useState(text);
     const [editedRating, setEditedRating] = useState(rating);
@@ -49,7 +49,7 @@ function Opinion({ id, name, date, rating, text, avatar, currentUserId, userId, 
             </div>
             <p>{text}</p>
 
-            {currentUserId === userId && (
+            {(currentUserId === userId || isAdmin === 'admin') && (
                 <div className="d-flex justify-content-end">
                     <Dropdown>
                         <Dropdown.Toggle variant="secondary" id="dropdown-custom-components">
@@ -62,6 +62,7 @@ function Opinion({ id, name, date, rating, text, avatar, currentUserId, userId, 
                     </Dropdown>
                 </div>
             )}
+
 
             {/* Edit Modal */}
             <Modal show={isEditing} onHide={() => setIsEditing(false)}>

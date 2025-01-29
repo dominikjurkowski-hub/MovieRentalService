@@ -14,7 +14,7 @@ function MovieDetailsPage() {
     const { updateCartTotalPrice } = useOutletContext(); // Odbieramy funkcję z kontekstu
     const [averageRating, setAverageRating] = useState('');
     const [currentUserId, setCurrentUserId] = useState(null);
-
+    const [isAdmin, setIsAdmin] = useState('user');
 
 
     if (!movie) {
@@ -40,7 +40,8 @@ function MovieDetailsPage() {
 
                     if (response.ok) {
                         const userData = await response.json();
-                        setCurrentUserId(userData.id); // Zakładając, że backend zwraca userId
+                        setCurrentUserId(userData.id);
+                        setIsAdmin(userData.role);// Zakładając, że backend zwraca userId
                     } else {
                         console.error("Error fetching user data:", response.statusText);
                     }
@@ -282,7 +283,7 @@ function MovieDetailsPage() {
                 <div className="opinion-container mb-4">
                     {opinions.map((opinion, index) => (
                         <Opinion key={index} currentUserId = {currentUserId} onEdit={editOpinion}
-                                 onDelete={deleteOpinion} {...opinion}/>
+                                 onDelete={deleteOpinion} isAdmin={isAdmin} {...opinion}/>
                     ))}
                 </div>
             </div>
