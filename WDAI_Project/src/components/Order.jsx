@@ -10,6 +10,8 @@ function Order({ order }) {
         navigate(`/movies/${movie.id}`, { state: { movie } });
     };
 
+    const pasteIconPayment = order.paymentMethod === 'paypal' ? " 📦" : order.paymentMethod === 'credit_card' ? " 💳" :" 📲";
+
     return (
         <div className="container py-4">
             <div className="card shadow-sm">
@@ -20,9 +22,9 @@ function Order({ order }) {
                     <div className="row">
                         <div className="col-md-6">
                             <p><strong>Address:</strong> {order.address}</p>
-                            <p><strong>Payment Method:</strong> {order.paymentMethod}</p>
+                            <p><strong>Payment Method:</strong>{order.paymentMethod}{pasteIconPayment}</p>
                             <p><strong>Date:</strong> {order.date}</p>
-                            <p><strong>Total Price:</strong> ${order.totalPrice.toFixed(2)}</p>
+                            <p><strong>Total Price:</strong> {order.totalPrice.toFixed(2)}$</p>
                             <p><strong>Status: </strong>
                                 <span className={`badge ${order.status === 'Completed' ? 'bg-success' : order.status === 'Pending' ? 'bg-warning' : 'bg-danger'}`}>
                                     {order.status}
@@ -31,7 +33,6 @@ function Order({ order }) {
                         </div>
                     </div>
 
-                    {/* Lista przedmiotów w koszyku */}
                     <div className="mt-4">
                         <h4>Cart Items:</h4>
                         <ul className="list-group">

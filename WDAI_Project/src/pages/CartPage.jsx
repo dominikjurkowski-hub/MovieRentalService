@@ -188,32 +188,30 @@ function CartPage() {
                         <label className="form-label">Payment Method</label>
                         <div className="d-flex justify-content-around">
                             <button
-                                className={`btn ${paymentMethod === "credit_card" ? "btn-success" : "btn-outline-secondary"}`}
-                                onClick={() => handlePaymentMethodChange("credit_card")}
+                                className={`btn ${paymentMethod === "Credit Card" ? "btn-success" : "btn-outline-secondary"}`}
+                                onClick={() => handlePaymentMethodChange("Credit Card")}
                             >
                                 💳 Credit Card
                             </button>
                             <button
-                                className={`btn ${paymentMethod === "paypal" ? "btn-success" : "btn-outline-secondary"}`}
-                                onClick={() => handlePaymentMethodChange("paypal")}
+                                className={`btn ${paymentMethod === "PayPal" ? "btn-success" : "btn-outline-secondary"}`}
+                                onClick={() => handlePaymentMethodChange("PayPal")}
                             >
                                 📦 PayPal
                             </button>
                             <button
-                                className={`btn ${paymentMethod === "blik" ? "btn-success" : "btn-outline-secondary"}`}
-                                onClick={() => handlePaymentMethodChange("blik")}
+                                className={`btn ${paymentMethod === "Blik" ? "btn-success" : "btn-outline-secondary"}`}
+                                onClick={() => handlePaymentMethodChange("Blik")}
                             >
                                 📲 BLIK
                             </button>
                         </div>
                     </div>
 
-                    {/* Cena końcowa */}
                     <div className="mb-3">
                         <h5>Total Price: ${calculateTotalPrice()}</h5>
                     </div>
 
-                    {/* Przycisk potwierdzenia zamówienia */}
                     <button className="btn btn-success" onClick={handleConfirmOrder}>
                         Confirm Order
                     </button>

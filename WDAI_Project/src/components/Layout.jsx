@@ -6,6 +6,10 @@ import logout from '../assets/logout.png';
 import cart from '../assets/cart.png';
 import home from '../assets/home.png';
 import login from '../assets/login.png';
+import loginDark from '../assets/loginDark.png';
+import logoutDark from '../assets/logoutDark.png';
+import cartDark from '../assets/cartDark.png';
+import homeDark from '../assets/homeDark.png';
 
 function Layout() {
     const getYear = new Date().getFullYear();
@@ -76,12 +80,14 @@ function Layout() {
                             <ul className="navbar-nav d-flex align-items-center">
                                 <li className="nav-item mx-2">
                                     <Link className={`nav-link fs-5 ${darkMode ? "text-light" : "text-dark"} d-flex align-items-center`} to="/">
-                                        <img src={home} width="25px" height="25px" title="Home" alt="Home by srip" />
+                                        {darkMode ? <img src={homeDark} width="25px" height="25px" title="Home" alt="Home by srip" /> :
+                                        <img src={home} width="25px" height="25px" title="Home" alt="Home by srip" />}
                                     </Link>
                                 </li>
                                 <li className="nav-item mx-2">
                                     <Link className={`nav-link fs-5 ${darkMode ? "text-light" : "text-dark"} d-flex align-items-center`} to="/cart">
-                                        <img src={cart} width="30px" height="30px" title="Cart" alt="Cart by Hada Studio" />
+                                        {darkMode ? <img src={cartDark} width="30px" height="30px" title="Cart" alt="Cart by Freepik" /> :
+                                        <img src={cart} width="30px" height="30px" title="Cart" alt="Cart by Hada Studio" /> }
                                         <span className="d-flex align-items-center">
                                             <span
                                                 className={`badge rounded-pill ms-2 ${cartTotalPrice > 0 ? "bg-success" : "bg-secondary"}`}
@@ -118,13 +124,17 @@ function Layout() {
                                             onClick={handleLogout}
                                             style={{ textDecoration: "none" }}
                                         >
-                                            <img src={logout} width="29px" height="29px" title="Logout" alt="Logout by Pixel perfect" />
+                                            {darkMode ? <img src={logoutDark} width="29px" height="29px" title="Logout" alt="Logout by Pixel perfect" />
+                                             : <img src={logout} width="29px" height="29px" title="Logout" alt="Logout by Pixel perfect" />}
                                         </button>
                                     </li>
                                 ) : (
                                     <li className="nav-item mx-2">
                                         <Link className={`nav-link fs-5 ${darkMode ? "text-light" : "text-dark"}`} to="/login">
-                                            <img src={login} width="29px" height="29px" title="Login" alt="Login by Pixel" />
+                                            {darkMode ? <img src={loginDark} width="29px" height="29px" title="Login" alt="Login by Pixel perfect" />
+                                                : <img src={login} width="29px" height="29px" title="Login"
+                                                             alt="Login by Pixel"/>}
+
                                         </Link>
                                     </li>
                                 )}
