@@ -42,7 +42,7 @@ function CartPage() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
+            //lub w body movieId zamiast w URL ale niektóre serwery nie ignorują body w DELETE
             const data = await response.json();
             if (response.ok) {
                 setCartItems((prevItems) => prevItems.filter((item) => item.id !== movieId));
