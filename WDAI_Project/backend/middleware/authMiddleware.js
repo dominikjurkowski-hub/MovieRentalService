@@ -12,7 +12,8 @@ export const authenticate = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, SECRET_KEY);
-        req.user = { userId: decoded.userId };
+        req.user = { userId: decoded.userId }; //można dodatkowo role,
+        //bo w authController.js token też ma zaszyfrowane
         next();
     } catch (err) {
         res.status(400).json({ error: 'Invalid token.' });
@@ -24,7 +25,8 @@ export const isAdmin = (req, res, next) => {
         return res.status(403).json({ error: 'Access denied. Admins only.' });
     }
     next();// w sumie nieużywane bo w używamy np (/..., authenticate, editOpinion, isAdmin)
-    //i isAdmin jest na końcu
+    //i isAdmin jest na końcu, można do req.user dodać przekazywanie roli, mimo że można getUserData
+    //a tak to od razu w req.user.role mamy
 };
 
 
