@@ -32,32 +32,33 @@ export const addReview = (req, res) => {
         if (rows.length > 0) {
             return res.status(400).json({ error: 'Nie możesz dodać więcej niż jednej recenzji.' });
         }
-    });
 
+        //else
 
-    // Tworzymy datę, która będzie zapisana w recenzji
-    const date = new Date().toLocaleDateString();
+        // Tworzymy datę, która będzie zapisana w recenzji
+        const date = new Date().toLocaleDateString();
 
-    // Zapytanie SQL, aby dodać nową recenzję
-    const sql = 'INSERT INTO reviews (movieId, name, rating, text, date, userId) VALUES (?, ?, ?, ?, ?, ?)';
-    const params = [movieId, name, rating, text, date, userId]; // Parametry dla SQL
+        // Zapytanie SQL, aby dodać nową recenzję
+        const sql = 'INSERT INTO reviews (movieId, name, rating, text, date, userId) VALUES (?, ?, ?, ?, ?, ?)';
+        const params = [movieId, name, rating, text, date, userId]; // Parametry dla SQL
 
-    // Wykonanie zapytania do bazy danych
-    db.run(sql, params, function (err) {
-        if (err) {
-            // W przypadku błędu zwracamy 500 i szczegóły błędu
-            return res.status(500).json({ error: err.message });
-        }
+        // Wykonanie zapytania do bazy danych
+        db.run(sql, params, function (err) {
+            if (err) {
+                // W przypadku błędu zwracamy 500 i szczegóły błędu
+                return res.status(500).json({ error: err.message });
+            }
 
-        // Zwracamy odpowiedź z id nowej recenzji
-        res.json({
-            id: this.lastID,
-            movieId,
-            name,
-            rating,
-            text,
-            date,
-            userId
+            // Zwracamy odpowiedź z id nowej recenzji
+            res.json({
+                id: this.lastID,
+                movieId,
+                name,
+                rating,
+                text,
+                date,
+                userId
+            });
         });
     });
 };

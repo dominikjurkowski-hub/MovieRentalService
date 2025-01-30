@@ -52,7 +52,7 @@ function Opinion({ id, name, date, rating, text, avatar, currentUserId, userId, 
             </div>
             <p>{text}</p>
 
-            {(currentUserId === userId || isAdmin === 'admin') && (
+            {(currentUserId === userId) && (
                 <div className="d-flex justify-content-end">
                     <Dropdown>
                         <Dropdown.Toggle variant="secondary" id="dropdown-custom-components">
@@ -60,6 +60,19 @@ function Opinion({ id, name, date, rating, text, avatar, currentUserId, userId, 
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={handleEdit}>Edytuj</Dropdown.Item>
+                            <Dropdown.Item onClick={handleDelete} className="text-danger">Usuń</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </div>
+            )}
+
+            {(isAdmin === 'admin' && (currentUserId !== userId)) && (
+                <div className="d-flex justify-content-end">
+                    <Dropdown>
+                        <Dropdown.Toggle variant="secondary" id="dropdown-custom-components">
+                            Opcje
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
                             <Dropdown.Item onClick={handleDelete} className="text-danger">Usuń</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
