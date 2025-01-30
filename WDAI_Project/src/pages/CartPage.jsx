@@ -23,7 +23,12 @@ function CartPage() {
 
             const data = await response.json();
             if (response.ok) {
-                setCartItems(data);
+                const modifiedData = data.map((movie) => ({
+                    ...movie,
+                    genres: JSON.parse(movie.genres) //bo dostajemy tablicę w formacie JSON "[\"\...\"]", obiekty to { ... }
+                }))
+                setCartItems(modifiedData);
+                // console.log("Cart items fetched:", modifiedData);
             } else {
                 alert("Failed to fetch cart items");
             }

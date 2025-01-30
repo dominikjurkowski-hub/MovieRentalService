@@ -17,6 +17,7 @@ function MovieDetailsPage() {
     const [isAdmin, setIsAdmin] = useState('user');
 
 
+
     if (!movie) {
         return (
             <div>
@@ -285,10 +286,20 @@ function MovieDetailsPage() {
                 <h3>Opinions {averageRating}</h3>
                 <AddOpinionForm onAddOpinion={addOpinion} />
                 <div className="opinion-container mb-4">
-                    {opinions.map((opinion, index) => (
-                        <Opinion key={index} currentUserId = {currentUserId} onEdit={editOpinion}
-                                 onDelete={deleteOpinion} isAdmin={isAdmin} {...opinion}/>
-                    ))}
+                    {currentUserId === null ? (
+                        <p>Loading user data...</p> //czasami za szybko renderuje zanim zdąży pobrać userData
+                    ) : (
+                        opinions.map((opinion, index) => (
+                            <Opinion
+                                key={index}
+                                currentUserId={currentUserId}
+                                onEdit={editOpinion}
+                                onDelete={deleteOpinion}
+                                isAdmin={isAdmin}
+                                {...opinion}
+                            />
+                        ))
+                    )}
                 </div>
             </div>
             <div className="mt-4 text-center">

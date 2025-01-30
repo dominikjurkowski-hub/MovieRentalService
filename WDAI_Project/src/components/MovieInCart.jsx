@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 function MovieInCart({ movie, onRemove }) {
     const navigate = useNavigate();
 
+
+
     const handleMovieClick = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
         navigate(`/movies/${movie.id}`, { state: { movie } });
