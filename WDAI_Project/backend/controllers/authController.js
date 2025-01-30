@@ -8,7 +8,7 @@ export const register = async (req, res) => {
     const { email, password, role } = req.body;  // Pobieramy `role` z req.body
 
     const newRole = role === 'admin' ? 'admin' : 'user';  // Jeśli nie admin, to domyślnie user
-
+    //role też jest DEFAULY 'user' w modelu User.js więc nie jest to konieczne
     try {
         const userId = await User.create(email, password, newRole); // Przekazujemy `role`
         res.status(201).json({ message: 'User registered successfully', userId });

@@ -31,9 +31,9 @@ function PlacedOrdersPage() {
     return (
         <div>
             <ul>
-                {orders.map((order, index) => (
+                { orders.length > 0 ? orders.map((order, index) => (
                     <Order key={index} order={order} />
-                ))}
+                )) : <h3>No orders placed</h3> }
             </ul>
         </div>
     );

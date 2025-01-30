@@ -60,6 +60,7 @@ function Order({ order }) {
 
 Order.propTypes = {
     order: PropTypes.shape({
+        id: PropTypes.number.isRequired,
         userId: PropTypes.number.isRequired,
         address: PropTypes.string.isRequired,
         paymentMethod: PropTypes.string.isRequired,

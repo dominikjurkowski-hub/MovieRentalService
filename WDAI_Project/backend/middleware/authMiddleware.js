@@ -23,7 +23,8 @@ export const isAdmin = (req, res, next) => {
     if (req.user.role !== 'admin') {
         return res.status(403).json({ error: 'Access denied. Admins only.' });
     }
-    next();
+    next();// w sumie nieużywane bo w używamy np (/..., authenticate, editOpinion, isAdmin)
+    //i isAdmin jest na końcu
 };
 
 
