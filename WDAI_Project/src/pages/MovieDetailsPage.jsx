@@ -284,9 +284,10 @@ function MovieDetailsPage() {
 
             <div className="container py-5">
                 <h3>Opinions {averageRating}</h3>
-                <AddOpinionForm onAddOpinion={addOpinion} />
+                {token && <AddOpinionForm onAddOpinion={addOpinion} />}
                 <div className="opinion-container mb-4">
-                    {currentUserId === null ? (
+                    {/*wtf jak to działa XD*/}
+                    {currentUserId && token === null ? (
                         <p>Loading user data...</p> //czasami za szybko renderuje zanim zdąży pobrać userData
                     ) : (
                         opinions.map((opinion, index) => (

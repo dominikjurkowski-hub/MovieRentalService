@@ -138,7 +138,7 @@ Opinion.propTypes = {
     rating: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
     avatar: PropTypes.string,
-    currentUserId: PropTypes.number.isRequired,
+    currentUserId: PropTypes.number,
     userId: PropTypes.number.isRequired,
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
