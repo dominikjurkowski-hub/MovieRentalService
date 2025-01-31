@@ -286,10 +286,7 @@ function MovieDetailsPage() {
                 <h3>Opinions {averageRating}</h3>
                 {token && <AddOpinionForm onAddOpinion={addOpinion} />}
                 <div className="opinion-container mb-4">
-                    {/*wtf jak to działa XD*/}
-                    {currentUserId && token === null ? (
-                        <p>Loading user data...</p> //czasami za szybko renderuje zanim zdąży pobrać userData
-                    ) : (
+                    {
                         opinions.map((opinion, index) => (
                             <Opinion
                                 key={index}
@@ -299,7 +296,7 @@ function MovieDetailsPage() {
                                 isAdmin={isAdmin}
                                 {...opinion}
                             />
-                        ))
+                        )
                     )}
                 </div>
             </div>
