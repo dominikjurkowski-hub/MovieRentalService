@@ -178,6 +178,7 @@ function MovieDetailsPage() {
 
             if (response.ok) {
                 setOpinions((prevOpinions) => prevOpinions.filter((opinion) => opinion.id !== id));
+                fetchOpinions();
             } else {
                 const error = await response.json();
                 alert('Error: ' + error.message);
